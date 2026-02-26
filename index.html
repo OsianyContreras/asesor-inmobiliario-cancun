@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Amigo Experto - Asesoría Inmobiliaria en Cancún y México</title>
+    <meta name="description" content="Guía experta en Infonavit y venta de terceros. Te ayudamos a comprar o vender tu propiedad en Cancún y todo México de manera sencilla y segura.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class='bx bxs-home-heart'></i>
+            <span>Tu Amigo Experto</span>
+        </div>
+        <button class="nav-cta" onclick="openLeadModal()">Hablar con un Experto</button>
+    </nav>
+
+    <main class="container">
+        <!-- Hero & Info Section -->
+        <section class="info-section">
+            <div class="hero-content">
+                <span class="badge">🌴 Especialistas en Cancún y Todo México</span>
+                <h1>Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span></h1>
+                <p class="subtitle">Descubre cómo aprovechar tus puntos Infonavit o vender de forma segura. Transformamos trámites complejos en el Caribe Mexicano en una experiencia increíble.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-book-open'></i></div>
+                        <h3>Educación desde Cero</h3>
+                        <p>Te explicamos qué es la Subcuenta, Precalificación y Escrituración de forma clara y sin tecnicismos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-group'></i></div>
+                        <h3>Unamos Créditos</h3>
+                        <p>Junta tus puntos Infonavit con tu pareja, amigos o familiares para alcanzar tu meta más rápido.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-shield-alt-2'></i></div>
+                        <h3>Compra Segura</h3>
+                        <p>Te guiamos paso a paso en la compra de casas usadas a terceros con total transparencia.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-tachometer'></i></div>
+                        <h3>Velocidad Nacional</h3>
+                        <p>Nosotros nos encargamos de los trámites y avalúos para que tú solo disfrutes el resultado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section class="chat-section">
+            <div class="glass-panel chat-container">
+                <div class="chat-header">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Amigo+Experto&background=10b981&color=fff&rounded=true&bold=true" alt="Asesor">
+                        <span class="status-dot"></span>
+                    </div>
+                    <div class="agent-info">
+                        <h2>Tu Amigo Experto</h2>
+                        <span class="status-text">Asesor Senior en Línea</span>
+                    </div>
+                    <button class="action-btn" title="Reiniciar chat" onclick="resetChat()">
+                        <i class='bx bx-refresh'></i>
+                    </button>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be injected by JS -->
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="typing-indicator hidden" id="typingIndicator">
+                        Escribiendo<span>.</span><span>.</span><span>.</span>
+                    </div>
+                    <form id="chatForm">
+                        <input type="text" id="userInput" placeholder="Escribe tu mensaje aquí..." autocomplete="off">
+                        <button type="submit" id="sendBtn" title="Enviar"><i class='bx bx-send'></i></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lead Modal -->
+    <div class="modal-overlay" id="leadModal">
+        <div class="modal-content glass-panel">
+            <button class="close-modal" onclick="closeLeadModal()"><i class='bx bx-x'></i></button>
+            <div class="modal-header">
+                <h3>🏠 Da el primer paso</h3>
+                <p>Déjanos tus datos para agendar una llamada y analizar tu caso personalizado.</p>
+            </div>
+            <form id="leadForm" onsubmit="submitLead(event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono (WhatsApp)</label>
+                    <input type="tel" id="phone" required placeholder="Ej. 55 1234 5678">
+                </div>
+                <div class="form-group">
+                    <label for="interest">¿Qué sueño quieres cumplir?</label>
+                    <select id="interest" required>
+                        <option value="" disabled selected>Selecciona una opción...</option>
+                        <option value="comprar">Comprar una casa</option>
+                        <option value="vender">Vender mi propiedad</option>
+                        <option value="puntos">Saber cuántos puntos tengo</option>
+                        <option value="unir">Unir créditos con alguien</option>
+                    </select>
+                </div>
+                <p class="nss-notice">
+                    <i class='bx bxs-lock-alt'></i> Por tu seguridad, <strong>no solicitamos tu NSS (Número de Seguridad Social) por chat</strong>. Te lo pediremos más adelante en un portal seguro.
+                </p>
+                <button type="submit" class="submit-btn">Agendar Asesoría Gratuita</button>
+            </form>
+            <div id="successMessage" class="success-message hidden">
+                <i class='bx bxs-check-circle'></i>
+                <h4>¡Listo!</h4>
+                <p>Nos contactaremos contigo muy pronto. ¡Estamos listos para hacer equipo!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
