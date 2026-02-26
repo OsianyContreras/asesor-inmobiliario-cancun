@@ -8,7 +8,7 @@ const leadForm = document.getElementById('leadForm');
 const successMessage = document.getElementById('successMessage');
 
 // Chat State
-let currentUserState = 'START'; 
+let currentUserState = 'START';
 // States: START, DIAGNOSIS, VALUE_PROP, CAPTURE
 
 // Helper to scroll to bottom
@@ -31,13 +31,13 @@ function hideTyping() {
 function addMessage(text, sender, isHTML = false) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message', sender);
-    
+
     if (isHTML) {
         msgDiv.innerHTML = text;
     } else {
         msgDiv.textContent = text;
     }
-    
+
     chatMessages.appendChild(msgDiv);
     scrollToBottom();
 }
@@ -46,12 +46,12 @@ function addMessage(text, sender, isHTML = false) {
 function addOptions(options) {
     const wrapperDiv = document.createElement('div');
     wrapperDiv.classList.add('options-wrapper');
-    
+
     options.forEach(opt => {
         const btn = document.createElement('button');
         btn.classList.add('option-btn');
         if (opt.primary) btn.classList.add('cta-primary');
-        
+
         btn.innerHTML = `<span>${opt.text}</span> <i class='bx bx-chevron-right'></i>`;
         btn.onclick = () => {
             handleUserSelection(opt.text, opt.action);
@@ -61,7 +61,7 @@ function addOptions(options) {
         };
         wrapperDiv.appendChild(btn);
     });
-    
+
     chatMessages.appendChild(wrapperDiv);
     scrollToBottom();
 }
@@ -70,15 +70,15 @@ function addOptions(options) {
 async function botResponse(userMessage, action = null) {
     showTyping();
     chatForm.querySelector('button').disabled = true;
-    
+
     // Simulate thinking delay (1-2 seconds)
     const delay = Math.random() * 1000 + 1000;
-    
+
     setTimeout(() => {
         hideTyping();
         chatForm.querySelector('button').disabled = false;
         userInput.focus();
-        
+
         let responseHTML = "";
         let options = [];
 
@@ -89,7 +89,7 @@ async function botResponse(userMessage, action = null) {
         }
 
         const lowerMsg = userMessage.toLowerCase();
-        
+
         // Error handling for off-topic (very basic keyword check)
         const inmoKeywords = ['casa', 'comprar', 'vender', 'infonavit', 'puntos', 'crédito', 'departamento', 'hogar', 'hola', 'buenas'];
         const isRelated = inmoKeywords.some(kw => lowerMsg.includes(kw)) || currentUserState === 'START';
@@ -111,7 +111,7 @@ async function botResponse(userMessage, action = null) {
                 ];
                 currentUserState = 'DIAGNOSIS';
                 break;
-                
+
             case 'DIAGNOSIS':
                 // If they type instead of clicking
                 responseHTML = `Entiendo perfectamente. En Cancún y en todo México, nosotros agilizamos todos los avalúos y trámites. Tú no te estresas por el papeleo. 😉<br><br>¿Te gustaría que revisemos tu situación exacta?`;
@@ -129,7 +129,7 @@ async function botResponse(userMessage, action = null) {
                 ];
                 currentUserState = 'CAPTURE';
                 break;
-                
+
             default:
                 responseHTML = `¡Siempre estoy aquí para ayudarte! Si quieres que revisemos tu caso a detalle, solo avísame.`;
                 options = [
@@ -157,10 +157,10 @@ function handleAction(action) {
             ];
             currentUserState = 'DIAGNOSIS';
             break;
-            
+
         case "SELL":
             responseHTML = `Vender una propiedad requiere seguridad y rapidez. 🤝 Nosotros gestionamos ventas de terceros de forma segura, nos encargamos de los trámites y avalúos para que a ti te paguen rápido y sin estrés.`;
-             options = [
+            options = [
                 { text: "Agendar análisis de mi propiedad", action: "LEAD", primary: true }
             ];
             currentUserState = 'CAPTURE';
@@ -197,7 +197,7 @@ function handleAction(action) {
             ];
             currentUserState = 'CAPTURE';
             break;
-            
+
         case "OPEN_MODAL":
             openLeadModal();
             return; // Don't add a message
@@ -228,14 +228,14 @@ chatForm.addEventListener('submit', (e) => {
 function initChat() {
     chatMessages.innerHTML = '';
     currentUserState = 'START';
-    
+
     setTimeout(() => {
         addMessage(`¡Hola! 👋 Soy <strong>Tu Amigo Experto</strong>, tu asesor inmobiliario de confianza. <br><br>Estoy aquí para hacer que los trámites sean sencillos. ¿Qué sueño queremos cumplir hoy?`, 'bot', true);
-        
+
         setTimeout(() => {
             addOptions([
                 { text: "Quiero comprar una casa", action: "BUY" },
-                { text: "Quiero vender mi casa", action: "SELL" },
+                { text: "Quiero unir mis puntos", action: "UNAMOS" },
                 { text: "Saber de mis puntos", action: "EXPLAIN_POINTS" }
             ]);
         }, 500);
@@ -256,11 +256,30 @@ function closeLeadModal() {
 
 function submitLead(e) {
     e.preventDefault();
-    // In a real app, send data to backend here.
-    
+
+    // Obtener los datos del formulario
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const interestSelect = document.getElementById('interest');
+    const interestText = interestSelect.options[interestSelect.selectedIndex].text;
+
+    // Configura aquí tu número de WhatsApp (código de país + número, sin el '+')
+    const whatsappNumber = "529983008729";
+
+    // Crear el mensaje pre-llenado
+    const message = `¡Hola Tu Amigo Experto! 👋\n\nSoy *${name}* y me gustaría agendar una asesoría gratuita.\n\nMi número de contacto es: ${phone}\n\nMe interesa: *${interestText}*.\n\n¡Espero tu mensaje!`;
+    const encodedMessage = encodeURIComponent(message);
+
+    // Crear la URL de WhatsApp
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+    // Mostrar mensaje de éxito en la web
     leadForm.style.display = 'none';
     successMessage.classList.remove('hidden');
-    
+
+    // Abrir WhatsApp en una nueva pestaña (o app si está en móvil)
+    window.open(whatsappUrl, '_blank');
+
     setTimeout(() => {
         closeLeadModal();
         addMessage("¡He recibido tus datos! 🎉 Me pondré en contacto contigo por WhatsApp muy pronto para empezar a trabajar en tu plan.", "bot");
