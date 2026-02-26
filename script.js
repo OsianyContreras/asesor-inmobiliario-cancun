@@ -347,10 +347,71 @@ function submitLead(e) {
     }, 2000);
 }
 
+// =========================================
+// PHASE 3 LOGIC
+// =========================================
+
+// 1. Points Simulator
+function calculatePoints() {
+    const age = parseInt(document.getElementById('sim-age').value);
+    const salary = parseFloat(document.getElementById('sim-salary').value);
+    const resultDiv = document.getElementById('sim-result');
+
+    if (!age || !salary || age < 18 || salary < 5000) {
+        alert("Por favor ingresa datos válidos (mayor de 18 años y sueldo mayor a $5,000).");
+        return;
+    }
+
+    // Rough estimation formula (just for engagement purposes)
+    let potential = salary * 35;
+
+    // Penalize if older than 40
+    if (age > 40) {
+        potential = potential * (1 - ((age - 40) * 0.02));
+    }
+
+    // Format to MXN
+    const formattedAmount = potential.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
+
+    resultDiv.innerHTML = `
+        <h3>¡Tu perfil tiene potencial! 🚀</h3>
+        <p>Basado en tus datos, Infonavit te podría prestar hasta:</p>
+        <span class="amount">${formattedAmount}</span>
+        <p>¿Quieres verificar tus 1,080 puntos reales y ver cuánto dinero tienes ahorrado en tu Subcuenta?</p>
+        <button class="submit-btn" style="margin-top:10px" onclick="openLeadModal()">Verificar mis puntos gratis</button>
+    `;
+
+    resultDiv.classList.remove('hidden');
+}
+
+// 2. FAQ Accordion Logic
+document.querySelectorAll('.faq-question').forEach(button => {
+    button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const answer = button.nextElementSibling;
+        const isActive = faqItem.classList.contains('active');
+
+        // Close all others
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+            item.querySelector('.faq-answer').style.maxHeight = null;
+        });
+
+        // Toggle current
+        if (!isActive) {
+            faqItem.classList.add('active');
+            answer.style.maxHeight = answer.scrollHeight + "px";
+        }
+    });
+});
+
 // Reset Chat manually
 function resetChat() {
     initChat();
 }
+
+// Init on load
+window.addEventListener('load', initChat);
 
 // Start
 document.addEventListener('DOMContentLoaded', initChat);

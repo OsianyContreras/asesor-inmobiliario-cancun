@@ -918,6 +918,282 @@ span.fovissste {
     font-weight: 600;
 }
 
+/* =========================================
+   PHASE 3 FEATURES
+   ========================================= */
+
+/* Section Titles */
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-main);
+    font-family: 'Playfair Display', serif;
+}
+
+/* Points Simulator */
+.simulator-section {
+    padding: 4rem 5%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.simulator-container {
+    padding: 2.5rem;
+    text-align: center;
+    border: 1px solid var(--primary-glow);
+    background: linear-gradient(145deg, rgba(16, 185, 129, 0.05), rgba(0, 0, 0, 0.4));
+}
+
+.simulator-header i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.simulator-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.simulator-header p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.simulator-body .form-group {
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.sim-result {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--primary);
+    animation: fadeIn 0.5s ease;
+}
+
+.sim-result h3 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.sim-result .amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    display: block;
+    margin: 1rem 0;
+}
+
+/* Myths vs Reality Flip Cards */
+.myths-section {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.myths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.myth-card {
+    background: transparent;
+    height: 300px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.myth-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.myth-card:hover .myth-inner {
+    transform: rotateY(180deg);
+}
+
+.myth-front,
+.myth-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-light);
+}
+
+.myth-front {
+    background: var(--bg-card);
+}
+
+.myth-back {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(16, 185, 129, 0.2));
+    border-color: var(--secondary);
+    transform: rotateY(180deg);
+}
+
+.myth-card i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.myth-back i {
+    color: var(--primary);
+}
+
+.myth-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.myth-back h3 {
+    color: var(--text-main);
+}
+
+.myth-card p {
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.myth-back p {
+    font-style: normal;
+    font-weight: 500;
+}
+
+.flip-hint {
+    position: absolute;
+    bottom: 15px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* FAQ Accordion */
+.faq-section {
+    padding: 4rem 5%;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+}
+
+.faq-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 1.5rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition-fast);
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-question i {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    color: var(--primary);
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.faq-answer p {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Floating WhatsApp Button */
+.floating-whatsapp {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+}
+
+.floating-whatsapp:hover {
+    transform: scale(1.15) rotate(-5deg);
+    color: white;
+}
+
+.floating-whatsapp .tooltip {
+    position: absolute;
+    right: 75px;
+    background: var(--bg-dark);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    border: 1px solid var(--glass-border);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.floating-whatsapp:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-5px);
+}
+
 /* Chat Animation */
 @keyframes bounceIn {
     0% {

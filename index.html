@@ -161,6 +161,131 @@
                 </div>
             </div>
         </section>
+
+        <!-- Phase 3: Points Simulator -->
+        <section class="simulator-section">
+            <div class="glass-panel simulator-container">
+                <div class="simulator-header">
+                    <i class='bx bx-calculator'></i>
+                    <h2>Simulador Rápido de Crédito</h2>
+                    <p>Calcula tu potencial de compra en menos de 1 minuto sin compromisos.</p>
+                </div>
+                <div class="simulator-body">
+                    <div class="form-group">
+                        <label for="sim-age">¿Qué edad tienes?</label>
+                        <input type="number" id="sim-age" min="18" max="70" placeholder="Ej. 35">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-salary">Sueldo mensual libre aproximado</label>
+                        <input type="number" id="sim-salary" min="5000" placeholder="Ej. 15000">
+                    </div>
+                    <button class="submit-btn" onclick="calculatePoints()">Calcular Mi Potencial</button>
+
+                    <div id="sim-result" class="sim-result hidden">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: Myths vs Reality -->
+        <section class="myths-section">
+            <h2 class="section-title">Destruyendo Mitos del Infonavit 🔨</h2>
+            <div class="myths-grid">
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-ghost'></i>
+                            <h3>Mito</h3>
+                            <p>"Si uno mis puntos con otra persona, la casa será solo de uno de los dos."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-check-shield'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Falso! Con <strong>Unamos Créditos</strong> ambos son dueños legales bajo la figura de
+                                Copropiedad. Tu inversión está 100% protegida.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-time'></i>
+                            <h3>Mito</h3>
+                            <p>"Autorizar y escriturar con Infonavit tarda muchísimos meses."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-rocket'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Para nada! Nosotros agilizamos avalúos y gestión. Normalmente en <strong>3 a 5
+                                    semanas</strong> ya te estamos entregando tus llaves.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-x-circle'></i>
+                            <h3>Mito</h3>
+                            <p>"No puedo comprar una casa usada a un particular con mi crédito."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-home-heart'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Claro que puedes! Nosotros somos expertos en <strong>Venta de Terceros</strong>. Nos
+                                aseguramos de destrabar los trámites para que la compra sea legal y segura.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: FAQ Accordion -->
+        <section class="faq-section">
+            <h2 class="section-title">Preguntas Frecuentes resueltas rápido ⚡</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Tiene algún costo tu asesoría inicial?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p><strong>¡Absolutamente ninguno!</strong> Mi primer objetivo es analizar tu caso, ver tus
+                            puntos y trazarte un plan. Solo ganamos si tú logras comprar o vender tu casa de forma
+                            exitosa.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo comprar en Cancún si vivo en otro Estado?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>¡Por supuesto! De hecho, nuestro fuerte es ayudar a personas de todo México a invertir en el
+                            paraíso. Nosotros coordinamos los trámites a distancia para que tú solo vengas a disfrutar
+                            tu nueva casa.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo unir mis puntos si no estoy casado?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>¡Sí! Ya no es necesario estar casados. Puedes unir tu crédito con un familiar (padres,
+                            hermanos) o un amigo(a) y comprar juntos una mejor propiedad dividiendo los gastos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Lead Modal -->
@@ -203,6 +328,13 @@
             </div>
         </div>
     </div>
+
+    <!-- Phase 3: Floating WhatsApp Button -->
+    <a href="https://wa.me/529983008729?text=Hola%20Juan%2C%20estoy%20en%20tu%20p%C3%A1gina%20y%20me%20gustar%C3%ADa%20hacerte%20una%20pregunta%20r%C3%A1pida%20%F0%9F%A4%9D"
+        class="floating-whatsapp" target="_blank" rel="noopener noreferrer">
+        <i class='bx bxl-whatsapp'></i>
+        <span class="tooltip">¿Duda urgente? Contáctame</span>
+    </a>
 
     <script src="script.js"></script>
 </body>
