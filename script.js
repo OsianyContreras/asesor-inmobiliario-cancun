@@ -464,44 +464,79 @@ function initChat() {
 
 // Modal Logic
 function openLeadModal() {
-    leadModal.classList.add('active');
-    successMessage.classList.add('hidden');
-    leadForm.style.display = 'block';
-    leadForm.reset();
+    if (leadModal) leadModal.classList.add('active');
+    if (successMessage) successMessage.classList.add('hidden');
+    if (leadForm) {
+        leadForm.style.display = 'block';
+        leadForm.reset();
+
+        // Reset subimt btn text
+        const submitBtn = leadForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.innerHTML = "<i class='bx bxl-whatsapp'></i> Hablar por WhatsApp";
+            submitBtn.disabled = false;
+        }
+    }
 }
 
 function closeLeadModal() {
-    leadModal.classList.remove('active');
+    if (leadModal) leadModal.classList.remove('active');
 }
 
 function submitLead(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     // Cambiar texto del botón a "Enviando..."
-    const submitBtn = leadForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = "Conectando con WhatsApp...";
-    submitBtn.disabled = true;
+    const submitBtn = leadForm ? leadForm.querySelector('button[type="submit"]') : null;
+    let originalText = "Hablar por WhatsApp";
+    if (submitBtn) {
+        originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = "<i class='bx bx-loader bx-spin'></i> Conectando...";
+        submitBtn.disabled = true;
+    }
 
-    // Obtener los datos del formulario
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
+    // Obtener los datos del formulario (safeguarded)
+    const nameEl = document.getElementById('name');
+    const phoneEl = document.getElementById('phone');
     const interestSelect = document.getElementById('interest');
+    const dateEl = document.getElementById('date');
+    const timeEl = document.getElementById('time');
+
+    if (!nameEl || !phoneEl || !interestSelect || !dateEl || !timeEl) {
+        console.warn("Form fields not found.");
+        // Restore button state if form fields are missing
+        if (submitBtn) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+        return;
+    }
+
+    const name = nameEl.value;
+    const phone = phoneEl.value;
     const interestText = interestSelect.options[interestSelect.selectedIndex].text;
+    const date = dateEl.value;
+    const time = timeEl.value;
+
+    // Formatear fecha para el mensaje (de AAAA-MM-DD a DD/MM/AAAA)
+    let formattedDate = date;
+    if (date) {
+        const parts = date.split('-');
+        if (parts.length === 3) formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
 
     // Número al que llegará el mensaje
     const whatsappNumber = "529983008729";
 
     // Crear el mensaje pre-llenado
-    const message = `¡Hola Tu Amigo Experto! 👋\n\nSoy *${name}* y me gustaría agendar una asesoría gratuita.\n\nMi número de contacto es: ${phone}\n\nMe interesa: *${interestText}*.\n\n¡Espero tu mensaje!`;
+    const message = `¡Hola Tu Amigo Experto! 👋\n\nSoy *${name}* y me gustaría agendar una asesoría gratuita.\n\n📱 Mi número de contacto es: ${phone}\n🎯 Me interesa: *${interestText}*.\n📅 Día agendado: *${formattedDate}*\n⏰ Hora: *${time}*\n\n¡Espero tu confirmación!`;
     const encodedMessage = encodeURIComponent(message);
 
-    // Intenta usar la API universal (a veces evade el QR en móviles, pero en desktop Web siempre pedirá inicio de sesión)
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
     // Mostrar mensaje de éxito en la web
-    leadForm.style.display = 'none';
-    successMessage.classList.remove('hidden');
+    if (leadForm) leadForm.style.display = 'none';
+    if (successMessage) successMessage.classList.remove('hidden');
 
     // Abrir WhatsApp en una nueva pestaña
     window.open(whatsappUrl, '_blank');
@@ -509,8 +544,6 @@ function submitLead(e) {
     setTimeout(() => {
         closeLeadModal();
         addMessage(`¡Te he redirigido a WhatsApp, ${name}! 🎉 En cuanto le des a "Enviar" en tu aplicación, nos llegará tu mensaje para empezar a analizar tu plan.`, "bot");
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
     }, 2000);
 }
 

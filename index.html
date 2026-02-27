@@ -297,6 +297,13 @@
     </nav>
 
     <main id="main-content">
+        <!-- ===== NUEVA: TEMPORIZADOR CENTRAL SUPERIOR DE OFERTA ===== -->
+        <div id="ofertaTimer"
+            style="display:none;position:relative;margin: 20px auto;width:fit-content;background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;padding:10px 28px;border-radius:50px;z-index:9500;box-shadow:0 4px 24px rgba(220,38,38,0.6);font-size:0.9rem;white-space:nowrap;text-align:center;">
+            <span style="font-weight:700;">🔥 Preventa termina en: </span>
+            <span style="font-size:1.2rem;font-weight:900;letter-spacing:2px;" id="timerDisplay">23:59:59</span>
+        </div>
+
         <!-- 1. Hero Content & Chat (The Hook) -->
         <section class="hero-section">
             <!-- ===== NUEVA: HERO VIDEO SECTION eliminado - fondo con gradiente -->
@@ -773,12 +780,7 @@
         </div>
     </div>
 
-    <!-- ===== NUEVA: TEMPORIZADOR CENTRAL SUPERIOR DE OFERTA ===== -->
-    <div id="ofertaTimer"
-        style="display:none;position:fixed;top:60px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;padding:10px 28px;border-radius:50px;z-index:9500;box-shadow:0 4px 24px rgba(220,38,38,0.6);font-size:0.9rem;white-space:nowrap;text-align:center;">
-        <span style="font-weight:700;">🔥 Preventa termina en: </span>
-        <span style="font-size:1.2rem;font-weight:900;letter-spacing:2px;" id="timerDisplay">23:59:59</span>
-    </div>
+
 
     <!-- ===== NUEVO: BOTÓN WHATSAPP FLOTANTE ===== -->
     <a href="https://wa.me/529983008729?text=Hola%20Juan%2C%20vi%20tu%20sitio%20y%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20las%20propiedades."
@@ -827,22 +829,53 @@
     <!-- FOMO Alert Container -->
     <div id="fomo-container" class="fomo-container"></div>
 
-    <!-- Lead Modal / Calendly Embed -->
+    <!-- Lead Modal / Form -->
     <div class="modal-overlay" id="leadModal">
-        <div class="modal-content glass-panel"
-            style="max-height: 90vh; overflow-y: hidden; display: flex; flex-direction: column;">
+        <div class="modal-content glass-panel" style="max-height: 90vh; overflow-y: auto;">
             <button class="close-modal" onclick="closeLeadModal()"><i class='bx bx-x'></i></button>
-            <div class="modal-header" style="flex-shrink: 0; padding-bottom: 0;">
+            <div class="modal-header">
                 <h3 id="leadTitle">🏠 Da el primer paso</h3>
-                <p id="leadDesc">Selecciona el día y hora que mejor te quede para nuestra llamada.</p>
+                <p id="leadDesc">Déjanos tus datos y nos comunicaremos contigo de inmediato vía WhatsApp para agendar tu
+                    asesoría gratuita.</p>
             </div>
 
-            <!-- Calendly Inline Widget -->
-            <div class="calendly-inline-widget"
-                data-url="https://calendly.com/tu-amigo-experto/asesoria-gratuita?hide_event_type_details=1&hide_gdpr_banner=1"
-                style="min-width:320px;height:700px; width: 100%; flex-grow: 1;"></div>
-            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            <form id="leadForm" onsubmit="submitLead(event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="phone" required placeholder="Ej. 123 456 7890">
+                </div>
+                <div class="form-group">
+                    <label for="interest">Me interesa principalmente:</label>
+                    <select id="interest" required>
+                        <option value="" disabled selected>Selecciona una opción</option>
+                        <option value="comprar">Comprar una propiedad</option>
+                        <option value="vender">Vender mi propiedad</option>
+                        <option value="inversion">Invertir en Riviera Maya</option>
+                        <option value="puntos">Saber sobre mis puntos Infonavit</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <div style="flex:1;">
+                        <label for="date">Fecha de Contacto</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div style="flex:1;">
+                        <label for="time">Hora de Contacto</label>
+                        <input type="time" id="time" required>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn"><i class='bx bxl-whatsapp'></i> Hablar por WhatsApp</button>
+            </form>
 
+            <div id="successMessage" class="success-message hidden">
+                <i class='bx bx-check-circle'></i>
+                <h4>¡Redirigiendo a WhatsApp!</h4>
+                <p>Si no se abre automáticamente, haz clic en el botón de abajo.</p>
+            </div>
         </div>
     </div>
 
