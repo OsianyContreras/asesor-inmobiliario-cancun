@@ -82,7 +82,8 @@ body {
     min-height: 100vh;
     position: relative;
     line-height: 1.6;
-    overflow-x: clip;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* Background Effects */
@@ -1786,12 +1787,6 @@ body.light-theme .wa-bubble {
 /* Responsiveness */
 @media (max-width: 1024px) {
 
-    html,
-    body {
-        overflow-y: visible !important;
-        height: auto !important;
-    }
-
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -1830,12 +1825,6 @@ body.light-theme .wa-bubble {
 }
 
 @media (max-width: 640px) {
-
-    html,
-    body {
-        overflow-y: visible !important;
-        height: auto !important;
-    }
 
     .hero-info h1 {
         font-size: 2.2rem;
