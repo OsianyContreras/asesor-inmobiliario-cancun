@@ -37,7 +37,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif;
 }
 
 body {
@@ -67,6 +76,8 @@ body {
     filter: blur(100px);
     opacity: 0.4;
     animation: float 20s ease-in-out infinite alternate;
+    will-change: transform;
+    transition: transform 0.1s linear;
 }
 
 .orb-1 {
@@ -241,6 +252,7 @@ section {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5));
 }
 
 .subtitle {
@@ -275,9 +287,9 @@ section {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-glow);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.15);
 }
 
 .icon-wrapper {
@@ -1101,7 +1113,7 @@ span.fovissste {
 }
 
 .myth-back {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(16, 185, 129, 0.15));
+    background: linear-gradient(135deg, rgb(16, 27, 44), rgb(18, 32, 49));
     border-color: var(--secondary);
     transform: rotateY(180deg);
 }

@@ -411,5 +411,26 @@ function resetChat() {
     initChat();
 }
 
-// Start
-document.addEventListener('DOMContentLoaded', initChat);
+// Parallax Effect for Background Orbs
+document.addEventListener('mousemove', (e) => {
+    const orbs = document.querySelectorAll('.orb');
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+
+    orbs.forEach((orb, index) => {
+        const speed = (index + 1) * 20;
+        const xPos = (window.innerWidth / 2 - e.pageX) / speed;
+        const yPos = (window.innerHeight / 2 - e.pageY) / speed;
+        orb.style.transform = `translate(${xPos}px, ${yPos}px)`;
+    });
+});
+
+// Init AOS Animation Library
+document.addEventListener('DOMContentLoaded', () => {
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50
+    });
+    initChat();
+});

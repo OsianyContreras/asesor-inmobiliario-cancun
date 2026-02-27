@@ -8,12 +8,15 @@
     <meta name="description"
         content="Guía experta en Infonavit y venta de terceros. Te ayudamos a comprar o vender tu propiedad en Cancún y todo México de manera sencilla y segura.">
 
-    <!-- Google Fonts -->
+    // Google Fonts
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
         rel="stylesheet">
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -47,7 +50,7 @@
         <!-- 1. Hero Content & Chat (The Hook) -->
         <section class="hero-section">
             <div class="section-container hero-grid">
-                <div class="hero-info">
+                <div class="hero-info" data-aos="fade-right" data-aos-duration="1000">
                     <span class="badge">🌴 Especialistas en Cancún y Todo México</span>
                     <h1>Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span></h1>
                     <p class="subtitle">Descubre cómo aprovechar tus puntos Infonavit o expeditar tu venta.
@@ -66,7 +69,7 @@
                     </div>
                 </div>
 
-                <div class="chat-wrapper">
+                <div class="chat-wrapper" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                     <div class="glass-panel chat-container">
                         <div class="chat-header">
                             <div class="avatar">
@@ -102,7 +105,7 @@
         </section>
 
         <!-- 2. Myths vs Reality (Education & Hook) -->
-        <section class="myths-section">
+        <section class="myths-section" data-aos="fade-up" data-aos-duration="800">
             <h2 class="section-title">Destruyendo Mitos del Infonavit 🔨</h2>
             <div class="myths-grid">
                 <div class="myth-card">
@@ -159,7 +162,7 @@
         </section>
 
         <!-- 3. Points Simulator (Engagement & Lead Capture) -->
-        <section class="simulator-section">
+        <section class="simulator-section" data-aos="zoom-in" data-aos-duration="800">
             <div class="glass-panel simulator-container">
                 <div class="simulator-header">
                     <i class='bx bx-calculator'></i>
@@ -185,7 +188,7 @@
         </section>
 
         <!-- 4. Value Proposition (Features Band - Logic) -->
-        <section class="value-prop-section">
+        <section class="value-prop-section" data-aos="fade-up" data-aos-duration="800">
             <div class="section-container">
                 <h2 class="section-title">¿Por qué dejas tus trámites a <span>Tu Amigo Experto</span>?</h2>
                 <div class="features-grid">
@@ -218,7 +221,7 @@
         </section>
 
         <!-- 5. Properties (Desire) -->
-        <section class="properties-section">
+        <section class="properties-section" data-aos="fade-up" data-aos-duration="800">
             <div class="section-container">
                 <h2 class="section-title">🏆 Desarrollos Destacados</h2>
                 <div class="property-carousel">
@@ -247,7 +250,7 @@
         </section>
 
         <!-- 6. Testimonial (Social Proof) -->
-        <section class="testimonial-section">
+        <section class="testimonial-section" data-aos="zoom-in" data-aos-duration="800">
             <div class="section-container testimonial-container">
                 <div class="testimonial-card outline">
                     <img src="https://ui-avatars.com/api/?name=Sofia+M&background=0ea5e9&color=fff&rounded=true"
@@ -263,7 +266,7 @@
         </section>
 
         <!-- 7. FAQ Accordion -->
-        <section class="faq-section">
+        <section class="faq-section" data-aos="fade-up" data-aos-duration="800">
             <h2 class="section-title">Preguntas Frecuentes resueltas rápido ⚡</h2>
             <div class="faq-container">
                 <div class="faq-item">
@@ -352,6 +355,7 @@
         <span class="tooltip">¿Duda urgente? Contáctame</span>
     </a>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 
