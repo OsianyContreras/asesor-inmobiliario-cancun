@@ -942,35 +942,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // PHASE 9 LOGIC: Data & Advanced Dynamics
 // =========================================
 
-// 1. Floating Video Widget
-const videoWidget = document.getElementById('videoWidget');
-const miniVideo = document.getElementById('miniVideo');
-const mainVideo = document.getElementById('mainVideo');
-const videoExpanded = document.getElementById('videoExpanded');
-const playOverlay = document.querySelector('.play-overlay');
+// 1. Floating Video Widget - ELIMINADO
+// Ocultar y destruir el widget de video si existe en el DOM
+(function () {
+    var ids = ['videoWidget', 'miniVideo', 'mainVideo', 'videoExpanded', 'waBubble', 'wa-bubble'];
+    ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    // También ocultar por clase
+    ['video-widget', 'wa-bubble', 'whatsapp-bubble', 'play-overlay'].forEach(function (cls) {
+        document.querySelectorAll('.' + cls).forEach(function (el) {
+            if (el.parentNode) el.parentNode.removeChild(el);
+        });
+    });
+})();
 
-function toggleVideoWidget() {
-    if (videoExpanded.classList.contains('hidden')) {
-        // Open Expanded Video
-        videoExpanded.classList.remove('hidden');
-        miniVideo.pause();
-        mainVideo.play();
-        playOverlay.style.display = 'none';
-
-        // Close WhatsApp bubble if open to avoid clutter
-        if (!waBubble.classList.contains('hidden')) {
-            waBubble.classList.add('hidden');
-        }
-    }
-}
-
-function closeVideoWidget() {
-    videoExpanded.classList.add('hidden');
-    mainVideo.pause();
-    mainVideo.currentTime = 0;
-    miniVideo.play();
-    playOverlay.style.display = 'block';
-}
+function toggleVideoWidget() { }
+function closeVideoWidget() { }
 
 // 2. HTML5 Canvas Interactive Particles
 const canvas = document.getElementById('bgCanvas');
@@ -1116,3 +1105,207 @@ if (canvas) {
     initCanvas();
     animate();
 }
+
+// =============================================
+// NUEVAS FUNCIONALIDADES - JAVASCRIPT
+// =============================================
+
+// 1. COMPARADOR DE PROPIEDADES
+function updateComparador() {
+    var a = parseInt(document.getElementById('cmp-a').value);
+    var b = parseInt(document.getElementById('cmp-b').value);
+    var grid = document.getElementById('comparadorGrid');
+    if (!grid) return;
+    if (typeof CARDS === 'undefined') return;
+
+    var rows = [
+        { label: 'Precio / Mensualidad', key: 'price' },
+        { label: 'Recámaras', key: 'beds' },
+        { label: 'Baños', key: 'baths' },
+        { label: 'Amenidad Principal', key: 'amenity' },
+        { label: 'Descripción', key: 'desc' }
+    ];
+
+    function buildCard(n) {
+        var d = CARDS[n];
+        var imgs = { 1: 'img_cancun.png', 2: 'img_merida.png', 3: 'img_tulum.png' };
+        var rowsHtml = rows.map(function (r) {
+            return '<div class="comp-row"><span class="comp-label">' + r.label + '</span><span class="comp-value">' + d[r.key] + '</span></div>';
+        }).join('');
+        return '<div class="comp-card"><img src="' + imgs[n] + '" alt="' + d.title + '"><div class="comp-body"><h3>' + d.title + '</h3><span style="display:inline-block;background:rgba(99,102,241,0.2);color:#a78bfa;padding:3px 10px;border-radius:50px;font-size:0.8rem;margin-bottom:1rem;">' + d.badge + '</span>' + rowsHtml + '<button class="submit-btn comp-btn" onclick="showCard(' + n + ')">Ver Detalles</button></div></div>';
+    }
+
+    grid.innerHTML = buildCard(a) + buildCard(b);
+}
+
+// 2. SIMULADOR DE PLUSVALÍA
+function calcPlusvalia() {
+    var precio = parseFloat(document.getElementById('pv-precio').value) || 0;
+    var tasa = parseFloat(document.getElementById('pv-zona').value) / 100;
+    var years = parseInt(document.getElementById('pv-years').value) || 5;
+    var chart = document.getElementById('pvChart');
+    var summary = document.getElementById('pvSummary');
+    if (!chart || !summary) return;
+
+    if (!precio || precio < 1000) {
+        summary.innerHTML = '<p style="color:var(--text-muted);">Introduce el precio de tu propiedad para ver la proyección</p>';
+        chart.innerHTML = '';
+        return;
+    }
+
+    // Generar datos por año
+    var data = [];
+    var maxVal = 0;
+    for (var i = 1; i <= years; i++) {
+        var val = precio * Math.pow(1 + tasa, i);
+        data.push({ year: 'Año ' + i, val: val });
+        if (val > maxVal) maxVal = val;
+    }
+
+    // Generar barras
+    chart.innerHTML = data.map(function (d) {
+        var pct = (d.val / maxVal) * 100;
+        var fmt = d.val >= 1000000 ? (d.val / 1000000).toFixed(2) + 'M' : (d.val / 1000).toFixed(0) + 'K';
+        return '<div class="pv-bar-wrap"><div class="pv-bar" style="height:' + pct + '%;"></div><div class="pv-bar-label">' + d.year + '<br>$' + fmt + '</div></div>';
+    }).join('');
+
+    var finalVal = data[data.length - 1].val;
+    var ganancia = finalVal - precio;
+    var formatMXN = function (n) { return '$' + Math.round(n).toLocaleString('es-MX'); };
+    summary.innerHTML = '<span class="pv-highlight">' + formatMXN(finalVal) + '</span><span class="pv-sub">Valor proyectado en ' + years + ' año(s)</span><div style="margin-top:0.8rem;padding:0.8rem;background:rgba(16,185,129,0.1);border-radius:8px;"><strong style="color:#10b981;">+' + formatMXN(ganancia) + '</strong> <span style="color:var(--text-muted);">de plusvalía estimada</span></div>';
+}
+
+// 3. MAPA INTERACTIVO
+var LOCATIONS = [
+    {
+        name: '🏙️ Depas Cancún Centro',
+        desc: 'Zona turística y comercial premium. A 15 min de la playa. Acceso a todas las avenidas principales.',
+        url: 'https://maps.google.com/maps?q=Cancun+Centro,Quintana+Roo,Mexico&t=&z=13&ie=UTF8&iwloc=&output=embed',
+        card: 1
+    },
+    {
+        name: '🏡 Casas Norte Mérida',
+        desc: 'La zona de mayor plusvalía en Yucatán. Colonias modernas con todos los servicios y escuelas top.',
+        url: 'https://maps.google.com/maps?q=Norte+Merida,Yucatan,Mexico&t=&z=13&ie=UTF8&iwloc=&output=embed',
+        card: 2
+    },
+    {
+        name: '🌿 Villas Tulum',
+        desc: 'En la selva maya a 5 min del cenote más famoso. Alta plusvalía garantizada por el boom turístico.',
+        url: 'https://maps.google.com/maps?q=Tulum,Quintana+Roo,Mexico&t=&z=13&ie=UTF8&iwloc=&output=embed',
+        card: 3
+    }
+];
+function selectLocation(i) {
+    var loc = LOCATIONS[i];
+    document.getElementById('mapaFrame').src = loc.url;
+    var info = document.getElementById('mapaInfo');
+    if (info) info.innerHTML = '<h3>' + loc.name + '</h3><p>' + loc.desc + '</p><button class="submit-btn" onclick="showCard(' + loc.card + ')">Ver Propiedad</button>';
+    document.querySelectorAll('.mapa-pin').forEach(function (p, idx) {
+        p.classList.toggle('active', idx === i);
+    });
+}
+
+// 4. TEMPORIZADOR DE OFERTA
+function startOfferTimer() {
+    // Countdown persistente usando localStorage
+    var stored = localStorage.getItem('offerEndTime');
+    var endTime;
+    if (stored) {
+        endTime = parseInt(stored);
+        if (endTime < Date.now()) {
+            // Resetea si ya expiró
+            endTime = Date.now() + 24 * 60 * 60 * 1000;
+            localStorage.setItem('offerEndTime', endTime);
+        }
+    } else {
+        endTime = Date.now() + 24 * 60 * 60 * 1000;
+        localStorage.setItem('offerEndTime', endTime);
+    }
+
+    var timerEl = document.getElementById('ofertaTimer');
+    var display = document.getElementById('timerDisplay');
+    if (timerEl) setTimeout(function () { timerEl.style.display = 'block'; }, 3000);
+
+    function tick() {
+        var remaining = endTime - Date.now();
+        if (remaining <= 0) remaining = 0;
+        var h = Math.floor(remaining / 3600000);
+        var m = Math.floor((remaining % 3600000) / 60000);
+        var s = Math.floor((remaining % 60000) / 1000);
+        if (display) display.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+    }
+    function pad(n) { return n < 10 ? '0' + n : n; }
+    tick();
+    setInterval(tick, 1000);
+}
+startOfferTimer();
+
+// 5. CONTADOR DE VISITANTES (SOCIAL PROOF)
+function startVisitorsCounter() {
+    var el = document.getElementById('visitorsAlert');
+    var textEl = document.getElementById('visitorsText');
+    if (!el || !textEl) return;
+
+    var msgs = [
+        '🔴 <strong>3 personas</strong> están viendo Cancún ahora',
+        '🟡 <strong>5 interesados</strong> revisando Tulum hoy',
+        '🟢 <strong>2 personas</strong> calculando su crédito ahora',
+        '🔴 <strong>7 personas</strong> consultaron Mérida esta hora',
+        '🟡 <strong>Alguien de CDMX</strong> acaba de agendar una cita'
+    ];
+    var i = 0;
+
+    setTimeout(function () {
+        el.style.display = 'block';
+        textEl.innerHTML = msgs[0];
+        setInterval(function () {
+            i = (i + 1) % msgs.length;
+            el.style.opacity = '0';
+            setTimeout(function () {
+                textEl.innerHTML = msgs[i];
+                el.style.opacity = '1';
+            }, 400);
+        }, 8000);
+    }, 6000);
+}
+startVisitorsCounter();
+
+// 6. EXIT INTENT POPUP
+(function () {
+    var shown = false;
+    document.addEventListener('mouseleave', function (e) {
+        if (e.clientY <= 10 && !shown) {
+            shown = true;
+            var popup = document.getElementById('exitPopup');
+            if (popup) {
+                popup.style.display = 'flex';
+                // Ocultar el timer durante el popup para que no se superponga
+                var timer = document.getElementById('ofertaTimer');
+                if (timer) timer.style.display = 'none';
+            }
+        }
+    });
+})();
+
+// 7. GALERÍA MULTI-FOTO EN MODAL (via CARDS extendidos con fotos extra)
+// Esta función permite avanzar la imagen del modal si hubiera galería
+var GALLERY_IDX = 0;
+var GALLERY_IMGS = [];
+function modalNextImg() {
+    if (!GALLERY_IMGS.length) return;
+    GALLERY_IDX = (GALLERY_IDX + 1) % GALLERY_IMGS.length;
+    var img = document.getElementById('pmMainImg');
+    if (img) img.src = GALLERY_IMGS[GALLERY_IDX];
+}
+function modalPrevImg() {
+    if (!GALLERY_IMGS.length) return;
+    GALLERY_IDX = (GALLERY_IDX - 1 + GALLERY_IMGS.length) % GALLERY_IMGS.length;
+    var img = document.getElementById('pmMainImg');
+    if (img) img.src = GALLERY_IMGS[GALLERY_IDX];
+}
+
+// Init comparador on load
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(updateComparador, 500);
+});
