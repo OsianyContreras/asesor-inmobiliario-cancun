@@ -1309,3 +1309,18 @@ function modalPrevImg() {
 document.addEventListener('DOMContentLoaded', function () {
     setTimeout(updateComparador, 500);
 });
+
+// =============================================
+// MOBILE TOUCH FIX: Myth flip cards
+// CSS :hover no funciona en pantallas táctiles.
+// Agregamos soporte de clic/toque para voltear las tarjetas.
+// =============================================
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.myth-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+            // Toggle active class para el flip
+            card.classList.toggle('flipped');
+        });
+    });
+});
+
