@@ -43,152 +43,65 @@
         <button class="nav-cta" onclick="openLeadModal()">Hablar con un Experto</button>
     </nav>
 
-    <main class="container">
-        <!-- Hero & Info Section -->
-        <section class="info-section">
-            <div class="hero-content">
-                <span class="badge">🌴 Especialistas en Cancún y Todo México</span>
-                <h1>Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span></h1>
-                <p class="subtitle">Descubre cómo aprovechar tus puntos Infonavit o vender de forma segura.
-                    Transformamos trámites complejos en el Caribe Mexicano en una experiencia increíble.</p>
+    <main id="main-content">
+        <!-- 1. Hero Content & Chat (The Hook) -->
+        <section class="hero-section">
+            <div class="section-container hero-grid">
+                <div class="hero-info">
+                    <span class="badge">🌴 Especialistas en Cancún y Todo México</span>
+                    <h1>Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span></h1>
+                    <p class="subtitle">Descubre cómo aprovechar tus puntos Infonavit o expeditar tu venta.
+                        Transformamos trámites complejos en una experiencia increíble, estés donde estés.</p>
 
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="icon-wrapper"><i class='bx bx-book-open'></i></div>
-                        <h3>Educación desde Cero</h3>
-                        <p>Te explicamos qué es la Subcuenta, Precalificación y Escrituración de forma clara y sin
-                            tecnicismos.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon-wrapper"><i class='bx bxs-group'></i></div>
-                        <h3>Unamos Créditos</h3>
-                        <p>Junta tus puntos Infonavit con tu pareja, amigos o familiares para alcanzar tu meta más
-                            rápido.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon-wrapper"><i class='bx bxs-shield-alt-2'></i></div>
-                        <h3>Compra Segura</h3>
-                        <p>Te guiamos paso a paso en la compra de tu departamento o casa de una o dos recámaras con:
-                            Alberca, Escuelas, Canchas deportivas, etc.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon-wrapper"><i class='bx bx-tachometer'></i></div>
-                        <h3>Velocidad Nacional</h3>
-                        <p>Nosotros nos encargamos de todos los trámites para que tú solo disfrutes el resultado.</p>
-                    </div>
-                </div>
-
-                <!-- Trust Logos -->
-                <div class="trust-logos">
-                    <p>Tramitamos tu crédito con seguridad a través de:</p>
-                    <div class="logos-container">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Logotipo_de_Infonavit.svg"
-                            alt="Infonavit">
-                        <span class="bank-logo fovissste">FOVISSSTE</span>
-                        <span class="bank-logo">BBVA</span>
-                        <span class="bank-logo">Santander</span>
-                    </div>
-                </div>
-
-                <!-- Testimonial -->
-                <div class="testimonial-card">
-                    <img src="https://ui-avatars.com/api/?name=Sofia+M&background=0ea5e9&color=fff&rounded=true"
-                        alt="Sofía" class="test-img">
-                    <div class="test-content">
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <p>"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito. ¡Ya tenemos
-                            casa con alberca en Cancún!"</p>
-                        <strong>- Sofía M.</strong>
-                    </div>
-                </div>
-
-                <!-- Property Carousel -->
-                <div class="property-carousel">
-                    <h3>🏆 Desarrollos Destacados</h3>
-                    <div class="property-cards">
-                        <div class="prop-card">
-                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400&h=250"
-                                alt="Casa con alberca">
-                            <span class="prop-badge">Con Alberca</span>
-                            <div class="prop-info">
-                                <h4>Residencial Aqua</h4>
-                                <p>Desde $9,500/mes o puntos</p>
-                            </div>
+                    <!-- Trust Logos at the top level for authority -->
+                    <div class="trust-logos">
+                        <p>Tramitamos tu crédito con seguridad a través de:</p>
+                        <div class="logos-container">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Logotipo_de_Infonavit.svg"
+                                alt="Infonavit">
+                            <span class="bank-logo fovissste">FOVISSSTE</span>
+                            <span class="bank-logo">BBVA</span>
+                            <span class="bank-logo">Santander</span>
                         </div>
-                        <div class="prop-card">
-                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400&h=250"
-                                alt="Departamento">
-                            <span class="prop-badge">Riviera Maya</span>
-                            <div class="prop-info">
-                                <h4>Oceana Depas</h4>
-                                <p>Desde $12,000/mes</p>
+                    </div>
+                </div>
+
+                <div class="chat-wrapper">
+                    <div class="glass-panel chat-container">
+                        <div class="chat-header">
+                            <div class="avatar">
+                                <img src="avatar.png" alt="Juan, Tu Amigo Experto">
+                                <span class="status-dot"></span>
                             </div>
+                            <div class="agent-info">
+                                <h2>Juan, Tu Amigo Experto</h2>
+                                <span class="status-text">Asesor Senior en Línea</span>
+                            </div>
+                            <button class="action-btn" title="Reiniciar chat" onclick="resetChat()">
+                                <i class='bx bx-refresh'></i>
+                            </button>
+                        </div>
+
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be injected by JS -->
+                        </div>
+
+                        <div class="chat-input-area">
+                            <div class="typing-indicator hidden" id="typingIndicator">
+                                Escribiendo<span>.</span><span>.</span><span>.</span>
+                            </div>
+                            <form id="chatForm">
+                                <input type="text" id="userInput" placeholder="Escribe tu mensaje aquí..."
+                                    autocomplete="off">
+                                <button type="submit" id="sendBtn" title="Enviar"><i class='bx bx-send'></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Chat Section -->
-        <section class="chat-section">
-            <div class="glass-panel chat-container">
-                <div class="chat-header">
-                    <div class="avatar">
-                        <img src="avatar.png" alt="Juan, Tu Amigo Experto">
-                        <span class="status-dot"></span>
-                    </div>
-                    <div class="agent-info">
-                        <h2>Juan, Tu Amigo Experto</h2>
-                        <span class="status-text">Asesor Senior en Línea</span>
-                    </div>
-                    <button class="action-btn" title="Reiniciar chat" onclick="resetChat()">
-                        <i class='bx bx-refresh'></i>
-                    </button>
-                </div>
-
-                <div class="chat-messages" id="chatMessages">
-                    <!-- Messages will be injected by JS -->
-                </div>
-
-                <div class="chat-input-area">
-                    <div class="typing-indicator hidden" id="typingIndicator">
-                        Escribiendo<span>.</span><span>.</span><span>.</span>
-                    </div>
-                    <form id="chatForm">
-                        <input type="text" id="userInput" placeholder="Escribe tu mensaje aquí..." autocomplete="off">
-                        <button type="submit" id="sendBtn" title="Enviar"><i class='bx bx-send'></i></button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Phase 3: Points Simulator -->
-        <section class="simulator-section">
-            <div class="glass-panel simulator-container">
-                <div class="simulator-header">
-                    <i class='bx bx-calculator'></i>
-                    <h2>Simulador Rápido de Crédito</h2>
-                    <p>Calcula tu potencial de compra en menos de 1 minuto sin compromisos.</p>
-                </div>
-                <div class="simulator-body">
-                    <div class="form-group">
-                        <label for="sim-age">¿Qué edad tienes?</label>
-                        <input type="number" id="sim-age" min="18" max="70" placeholder="Ej. 35">
-                    </div>
-                    <div class="form-group">
-                        <label for="sim-salary">Sueldo mensual libre aproximado</label>
-                        <input type="number" id="sim-salary" min="5000" placeholder="Ej. 15000">
-                    </div>
-                    <button class="submit-btn" onclick="calculatePoints()">Calcular Mi Potencial</button>
-
-                    <div id="sim-result" class="sim-result hidden">
-                        <!-- Injected by JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Phase 3: Myths vs Reality -->
+        <!-- 2. Myths vs Reality (Education & Hook) -->
         <section class="myths-section">
             <h2 class="section-title">Destruyendo Mitos del Infonavit 🔨</h2>
             <div class="myths-grid">
@@ -245,7 +158,111 @@
             </div>
         </section>
 
-        <!-- Phase 3: FAQ Accordion -->
+        <!-- 3. Points Simulator (Engagement & Lead Capture) -->
+        <section class="simulator-section">
+            <div class="glass-panel simulator-container">
+                <div class="simulator-header">
+                    <i class='bx bx-calculator'></i>
+                    <h2>Simulador Rápido de Crédito</h2>
+                    <p>Calcula tu potencial de compra en menos de 1 minuto sin compromisos.</p>
+                </div>
+                <div class="simulator-body">
+                    <div class="form-group">
+                        <label for="sim-age">¿Qué edad tienes?</label>
+                        <input type="number" id="sim-age" min="18" max="70" placeholder="Ej. 35">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-salary">Sueldo mensual libre aproximado</label>
+                        <input type="number" id="sim-salary" min="5000" placeholder="Ej. 15000">
+                    </div>
+                    <button class="submit-btn" onclick="calculatePoints()">Calcular Mi Potencial</button>
+
+                    <div id="sim-result" class="sim-result hidden">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Value Proposition (Features Band - Logic) -->
+        <section class="value-prop-section">
+            <div class="section-container">
+                <h2 class="section-title">¿Por qué dejas tus trámites a <span>Tu Amigo Experto</span>?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-book-open'></i></div>
+                        <h3>Educación desde Cero</h3>
+                        <p>Te explicamos qué es la Subcuenta, Precalificación y Escrituración de forma clara y sin
+                            tecnicismos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-group'></i></div>
+                        <h3>Unamos Créditos</h3>
+                        <p>Junta tus puntos Infonavit con tu pareja, amigos o familiares para alcanzar tu meta más
+                            rápido.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-shield-alt-2'></i></div>
+                        <h3>Compra Segura</h3>
+                        <p>Te guiamos paso a paso en la compra de tu propiedad con Alberca, Escuelas, Canchas
+                            deportivas, etc.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-tachometer'></i></div>
+                        <h3>Velocidad Nacional</h3>
+                        <p>Nosotros nos encargamos de todos los trámites para que tú solo disfrutes el resultado de las
+                            llaves.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Properties (Desire) -->
+        <section class="properties-section">
+            <div class="section-container">
+                <h2 class="section-title">🏆 Desarrollos Destacados</h2>
+                <div class="property-carousel">
+                    <div class="property-cards centered-cards">
+                        <div class="prop-card">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=400&h=250"
+                                alt="Casa con alberca">
+                            <span class="prop-badge">Con Alberca</span>
+                            <div class="prop-info">
+                                <h4>Residencial Aqua</h4>
+                                <p>Desde $9,500/mes o puntos</p>
+                            </div>
+                        </div>
+                        <div class="prop-card">
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400&h=250"
+                                alt="Departamento">
+                            <span class="prop-badge">Riviera Maya</span>
+                            <div class="prop-info">
+                                <h4>Oceana Depas</h4>
+                                <p>Desde $12,000/mes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Testimonial (Social Proof) -->
+        <section class="testimonial-section">
+            <div class="section-container testimonial-container">
+                <div class="testimonial-card outline">
+                    <img src="https://ui-avatars.com/api/?name=Sofia+M&background=0ea5e9&color=fff&rounded=true"
+                        alt="Sofía" class="test-img">
+                    <div class="test-content">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p>"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito. ¡Ya tenemos
+                            casa con alberca en Cancún!"</p>
+                        <strong>- Sofía M.</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. FAQ Accordion -->
         <section class="faq-section">
             <h2 class="section-title">Preguntas Frecuentes resueltas rápido ⚡</h2>
             <div class="faq-container">
@@ -285,7 +302,6 @@
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- Lead Modal -->

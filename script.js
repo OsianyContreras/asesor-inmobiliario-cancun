@@ -282,6 +282,7 @@ function initChat() {
     chatMessages.innerHTML = '';
     currentUserState = 'START';
 
+    // Small delay for natural feel
     setTimeout(() => {
         addMessage(`¡Hola! 👋 Soy <strong>Tu Amigo Experto</strong>, tu asesor inmobiliario de confianza. <br><br>Estoy aquí para hacer que los trámites sean sencillos. ¿Qué sueño queremos cumplir hoy?`, 'bot', true);
 
@@ -409,9 +410,6 @@ document.querySelectorAll('.faq-question').forEach(button => {
 function resetChat() {
     initChat();
 }
-
-// Init on load
-window.addEventListener('load', initChat);
 
 // Start
 document.addEventListener('DOMContentLoaded', initChat);
