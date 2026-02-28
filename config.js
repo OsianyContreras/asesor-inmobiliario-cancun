@@ -680,7 +680,7 @@ const AppConfig = {
                 "units": [
                     {
                         "name": "Planta Baja - 2 Rec",
-                        "price": "$890,000.00",
+                        "price": "$960,000.00",
                         "beds": 2,
                         "baths": 2,
                         "amenity": "Rooftop + Gym",
@@ -811,7 +811,7 @@ const AppConfig = {
                 "units": [
                     {
                         "name": "Ground Floor - 2 Bed",
-                        "price": "$11,500/mo",
+                        "price": "$960,000.00",
                         "beds": 2,
                         "baths": 2,
                         "amenity": "Rooftop + Gym",
