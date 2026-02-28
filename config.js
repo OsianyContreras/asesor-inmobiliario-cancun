@@ -12,15 +12,15 @@ const AppConfig = {
                 "vivienda",
                 "quiero una casa"
             ],
-            "response": "¡Qué gran paso! 🏠 Comprar casa es una decisión importante. En \"Tu Amigo Experto\" te llevamos de la mano en todo el proceso. ¿Ya sabes si cuentas con los 1080 puntos de crédito?",
+            "response": "¡Qué gran paso! 🏠 Comprar propiedad es una decisión importante. Para poder darte las mejores opciones, cuéntame: ¿Estás buscando para <strong>Vivir</strong> o como <strong>Inversión</strong> (Rentas Vacacionales)?",
             "options": [
                 {
-                    "text": "Sí, ya los tengo",
-                    "action": "VALUE_PROP_JUMP"
+                    "text": "Para Vivir con mi familia",
+                    "action": "BUY_LIVE"
                 },
                 {
-                    "text": "No sé cómo verlos",
-                    "action": "EXPLAIN_POINTS"
+                    "text": "Para Inversión / Rentas",
+                    "action": "BUY_INVEST"
                 }
             ]
         },
@@ -226,15 +226,15 @@ const AppConfig = {
                 "property",
                 "i want a house"
             ],
-            "response": "What a great step! 🏠 Buying a home is a major decision. At \"Tu Amigo Experto\" we guide you hand in hand throughout the whole process. Do you already know if you have the 1080 credit points?",
+            "response": "What a great step! 🏠 Buying a property is a major decision. To give you the best options, tell me: Are you looking to <strong>Live</strong> in it or as an <strong>Investment</strong> (Vacation Rentals)?",
             "options": [
                 {
-                    "text": "Yes, I have them",
-                    "action": "VALUE_PROP_JUMP"
+                    "text": "To Live with my family",
+                    "action": "BUY_LIVE"
                 },
                 {
-                    "text": "I don't know how to check",
-                    "action": "EXPLAIN_POINTS"
+                    "text": "For Investment / Rentals",
+                    "action": "BUY_INVEST"
                 }
             ]
         },
@@ -669,115 +669,163 @@ const AppConfig = {
         "es": {
             "cancun": {
                 "title": "Depas Cancún Centro",
-                "price": "Desde $11,500/mes o puntos",
                 "badge": "Preventa",
-                "beds": 2,
-                "baths": 2,
-                "amenity": "Rooftop + Gym",
-                "desc": "Exclusivos departamentos en el corazón de Cancún. Excelente opción tanto para vivir como para inversión a largo plazo debido a su ubicación estratégica cerca de plazas y avenidas principales. Cuenta con seguridad 24/7 y acabados de lujo.",
-                "image": "img_cancun.png",
-                "model": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                "images": [
+                    "img/cancun_exterior.png",
+                    "img/cancun_sala.png",
+                    "img/cancun_recamara.png",
+                    "img/cancun_exterior.png",
+                    "img/cancun_sala.png"
+                ],
+                "units": [
+                    {
+                        "name": "Planta Baja - 2 Rec",
+                        "price": "$890,000.00",
+                        "beds": 2,
+                        "baths": 2,
+                        "amenity": "Rooftop + Gym",
+                        "desc": "Ideal para accesibilidad total. Excelente iluminación natural y acabados de lujo."
+                    },
+                    {
+                        "name": "Nivel 1 - 2 Rec",
+                        "price": "$12,200/mes",
+                        "beds": 2,
+                        "baths": 2,
+                        "amenity": "Balcón Privado",
+                        "desc": "Vista despejada a la avenida principal. Espacios amplios y ventilados."
+                    },
+                    {
+                        "name": "Studio - Nivel 4",
+                        "price": "$9,800/mes",
+                        "beds": 1,
+                        "baths": 1,
+                        "amenity": "Vista al Mar",
+                        "desc": "Perfecto para inversión en rentas vacacionales. Alta demanda garantizada."
+                    }
+                ]
             },
             "merida": {
                 "title": "Casas Norte Mérida",
-                "price": "Desde $8,900/mes",
                 "badge": "Entrega Inmediata",
-                "beds": 3,
-                "baths": "2.5",
-                "amenity": "Parques y Seguridad",
-                "desc": "Ubicadas en la zona de mayor plusvalía y seguridad de México. Ideal para familias que buscan tranquilidad. Amplios espacios, jardines frontales y un entorno planeado con todos los servicios subterráneos.",
-                "image": "img_merida.png",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb"
+                "images": [
+                    "img/merida_exterior.png",
+                    "img/merida_exterior.png",
+                    "img/merida_exterior.png",
+                    "img/merida_exterior.png",
+                    "img/merida_exterior.png"
+                ],
+                "units": [
+                    {
+                        "name": "Modelo Jade (1 Rec)",
+                        "price": "$8,900/mes",
+                        "beds": 1,
+                        "baths": 1,
+                        "amenity": "Jardín Amplio",
+                        "desc": "Casa compacta con posibilidad de crecimiento. Ubicada en zona de alta plusvalía."
+                    },
+                    {
+                        "name": "Modelo Onix (2 Rec)",
+                        "price": "$12,500/mes",
+                        "beds": 2,
+                        "baths": 2,
+                        "amenity": "Cochera Techada",
+                        "desc": "Diseño moderno con techos de doble altura. Acabados regionales en piedra."
+                    }
+                ]
             },
             "alberca": {
                 "title": "Residencial Aqua",
-                "price": "Desde $9,500/mes o puntos",
                 "badge": "Infonavit Total",
-                "beds": 2,
-                "baths": 1,
-                "amenity": "Alberca Común",
-                "desc": "Un desarrollo pensado para quienes desean disfrutar el Caribe Mexicano cada fin de semana. A 15 minutos en auto de la playa. Amenidades de primer nivel con una enorme alberca central y palapas.",
-                "image": "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb"
+                "images": [
+                    "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800",
+                    "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d?auto=format&fit=crop&q=80&w=800"
+                ],
+                "units": [
+                    {
+                        "name": "Depto con Alberca",
+                        "price": "$9,500/mes",
+                        "beds": 2,
+                        "baths": 1,
+                        "amenity": "Alberca Común",
+                        "desc": "Disfruta el Caribe cada fin de semana. Amenidades de primer nivel."
+                    }
+                ]
             },
             "mar": {
                 "title": "Oceana Depas",
-                "price": "Desde $12,000/mes",
                 "badge": "Riviera Maya",
-                "beds": 1,
-                "baths": 1,
-                "amenity": "Frente al Mar",
-                "desc": "El sueño caribeño. Estudios y depas de 1 habitación literal a pasos de la arena. Diseñados específicamente para generar altos rendimientos en rentas vacacionales y disfrutar personal.",
-                "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF/FlightHelmet.gltf"
+                "images": [
+                    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800",
+                    "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800",
+                    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800"
+                ],
+                "units": [
+                    {
+                        "name": "Estudio Frente al Mar",
+                        "price": "$12,000/mes",
+                        "beds": 1,
+                        "baths": 1,
+                        "amenity": "Frente al Mar",
+                        "desc": "Literal a pasos de la arena. Diseñado para rentas vacacionales."
+                    }
+                ]
             },
             "inversion": {
                 "title": "Villas Tulum",
-                "price": "Excelente ROI GARANTIZADO",
                 "badge": "Alta Plusvalía",
-                "beds": 4,
-                "baths": 4,
-                "amenity": "Alberca Privada, Selva",
-                "desc": "Propiedades de ultra-lujo inmersas en la selva de Tulum. Concepto eco-chic con albercas privadas y materiales endémicos. Administración hotelera incluida para tus rentas cortas.",
-                "image": "img_tulum.png",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Avocado/glTF-Binary/Avocado.glb"
+                "images": [
+                    "img/tulum_exterior.png",
+                    "img/tulum_exterior.png",
+                    "img/tulum_exterior.png",
+                    "img/tulum_exterior.png",
+                    "img/tulum_exterior.png"
+                ],
+                "units": [
+                    {
+                        "name": "Villa Selva (4 Rec)",
+                        "price": "$28,000/mes",
+                        "beds": 4,
+                        "baths": 4,
+                        "amenity": "Pool Privada",
+                        "desc": "Inmersa en la selva. Concepto eco-chic."
+                    }
+                ]
             }
         },
         "en": {
             "cancun": {
                 "title": "Downtown Cancun Condos",
-                "price": "From $11,500 MXN/mo",
                 "badge": "Pre-sale",
-                "beds": 2,
-                "baths": 2,
-                "amenity": "Rooftop + Gym",
-                "desc": "Exclusive apartments in the heart of Cancun. Excellent option for both living and long-term investment due to its strategic location near main plazas and avenues. Features 24/7 security and luxury finishes.",
-                "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-            },
-            "merida": {
-                "title": "North Merida Homes",
-                "price": "From $8,900 MXN/mo",
-                "badge": "Immediate Delivery",
-                "beds": 3,
-                "baths": "2.5",
-                "amenity": "Parks & Security",
-                "desc": "Located in the area with the highest equity growth and security in Mexico. Ideal for families seeking peace. Wide spaces, front gardens, and a master-planned environment with underground services.",
-                "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb"
-            },
-            "alberca": {
-                "title": "Aqua Residential",
-                "price": "From $9,500 MXN/mo",
-                "badge": "Full Credit",
-                "beds": 2,
-                "baths": 1,
-                "amenity": "Shared Pool",
-                "desc": "A development designed for those who want to enjoy the Mexican Caribbean every weekend. 15 minutes drive to the beach. First-class amenities with a huge central pool and palapas.",
-                "image": "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&q=80&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Corset/glTF-Binary/Corset.glb"
-            },
-            "mar": {
-                "title": "Oceana Condos",
-                "price": "From $12,000 MXN/mo",
-                "badge": "Riviera Maya",
-                "beds": 1,
-                "baths": 1,
-                "amenity": "Oceanfront",
-                "desc": "The Caribbean dream. Studios and 1-bedroom apartments literally steps from the sand. Specifically designed to generate high returns in vacation rentals while allowing personal enjoyment.",
-                "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/FlightHelmet/glTF/FlightHelmet.gltf"
-            },
-            "inversion": {
-                "title": "Tulum Villas",
-                "price": "Excellent ROI GUARANTEED",
-                "badge": "High Equity",
-                "beds": 4,
-                "baths": 4,
-                "amenity": "Private Pool, Jungle",
-                "desc": "Ultra-luxury properties immersed in the Tulum jungle. Eco-chic concept with private pools and endemic materials. Hotel administration included for your short-term rentals.",
-                "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
-                "model": "https://modelviewer.dev/shared-assets/models/glTF-Sample-Models/2.0/Avocado/glTF-Binary/Avocado.glb"
+                "images": [
+                    "img/cancun_exterior.png",
+                    "img/cancun_sala.png",
+                    "img/cancun_recamara.png",
+                    "img/cancun_exterior.png",
+                    "img/cancun_sala.png"
+                ],
+                "units": [
+                    {
+                        "name": "Ground Floor - 2 Bed",
+                        "price": "$11,500/mo",
+                        "beds": 2,
+                        "baths": 2,
+                        "amenity": "Rooftop + Gym",
+                        "desc": "Perfect for full accessibility. Great natural lighting and luxury finishes."
+                    },
+                    {
+                        "name": "Level 1 - 2 Bed",
+                        "price": "$12,200/mo",
+                        "beds": 2,
+                        "baths": 2,
+                        "amenity": "Private Balcony",
+                        "desc": "Clear view toward the main avenue. Spacious and ventilated areas."
+                    }
+                ]
             }
         }
     }
