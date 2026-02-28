@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Tu Amigo Experto - Asesoría Inmobiliaria en Cancún y México</title>
+
+    <!-- PWA / App Integrations -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#06091a">
+    <link rel="apple-touch-icon" href="assets/img/avatar.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Amigo Experto">
+
+    <meta name="description"
+        content="Guía experta en Infonavit y venta de terceros. Te ayudamos a comprar o vender tu propiedad en Cancún y todo México de manera sencilla y segura.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css?v=4.8">
+
+    <!-- Model Viewer for 3D Objects -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+    <!-- Phase 9: Microsoft Clarity Heatmap Tracking -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "pgu72xqk98"); // Demo ID
+    </script>
+
+    <!-- MODAL CSS: Critical styles to make modal visible -->
+    <style>
+        #propertyModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        #propertyModal.active {
+            display: flex !important;
+        }
+
+        #propertyModal .modal-content {
+            background: #0f1a2e;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+        }
+
+        #propertyModal .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #propertyModal .close-btn:hover {
+            background: rgba(220, 38, 38, 0.7);
+        }
+
+        /* Gallery side — flex column (main image + thumbnails) */
+        #propertyModal .prop-gallery {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        /* Main image takes remaining space */
+        #propertyModal #pmMainImg {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.18s ease;
+            flex-shrink: 0;
+        }
+
+        /* Thumbnail strip */
+        #propertyModal #pmThumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            /* MAX 2 LINES */
+            gap: 8px;
+            padding: 10px 12px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: rgba(255, 255, 255, 0.04);
+            max-height: 170px;
+            /* limits to approx 2 rows of thumbnails */
+            min-height: 90px;
+            flex-shrink: 0;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        #propertyModal #pmThumbnails::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        #propertyModal #pmThumbnails::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
+        }
+
+        /* Grid: gallery | details */
+        #propertyModal .prop-modal-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            #propertyModal .prop-modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #propertyModal #pmMainImg {
+                height: 220px;
+            }
+        }
+
+        #propertyModal .prop-details {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #e2e8f0;
+            overflow-y: auto;
+        }
+
+        #propertyModal .prop-details h2 {
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+        }
+
+        #propertyModal .pm-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        #propertyModal .pm-features {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+            cursor: pointer;
+            /* Para que sepas que puedes interactuar aquí */
+        }
+
+        #propertyModal .pm-feature i {
+            color: #a78bfa;
+        }
+
+        #propertyModal .pm-description {
+            line-height: 1.6;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        #propertyModal .pm-cta {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        #propertyModal .prop-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.3);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(99, 102, 241, 0.5);
+        }
+
+        .property-filters-advanced {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .filter-group select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            /* Prevents iOS auto-zoom */
+        }
+
+        .filter-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+        }
+
+        .unit-selector {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .unit-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .unit-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .unit-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- Admin / Editor Styles --- */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-box {
+            background: #111827;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .admin-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+        }
+
+        .admin-box button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .editor-mode [contenteditable="true"] {
+            outline: 2px dashed var(--primary);
+            outline-offset: 4px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            cursor: text;
+        }
+
+        .editor-mode [contenteditable="true"]:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .admin-toolbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            z-index: 9999;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        body.editor-mode .admin-toolbar {
+            display: flex;
+        }
+
+        .admin-toolbar button {
+            background: white;
+            color: #6366f1;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+
+
+    <!-- MODAL FUNCTIONS: Inline script - NO EXTERNAL DEPENDENCIES -->
+    <script>
+        // Property data with full image galleries (5 photos each)
+        var CARDS = {
+            1: {
+                title: 'Depas Canc\u00fan Centro', badge: 'Preventa', price: 'Desde $11,500/mes o puntos',
+                beds: '2', baths: '2', amenity: 'Rooftop + Gym',
+                desc: 'Exclusivos departamentos en el coraz\u00f3n de Canc\u00fan. Seguridad 24/7 y acabados de lujo.',
+                img: 'assets/img/img_cancun.png',
+                images: [
+                    'assets/img/img_cancun.png',
+                    'https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            2: {
+                title: 'Casas Norte M\u00e9rida', badge: 'Entrega Inmediata', price: 'Desde $8,900/mes',
+                beds: '3', baths: '2.5', amenity: 'Parques y Seguridad',
+                desc: 'Ubicadas en la zona de mayor plusval\u00eda de M\u00e9xico. Amplios espacios y jardines frontales.',
+                img: 'assets/img/img_merida.png',
+                images: [
+                    'assets/img/img_merida.png',
+                    'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            3: {
+                title: 'Villas Tulum', badge: 'Alta Plusval\u00eda', price: 'Excelente ROI GARANTIZADO',
+                beds: '4', baths: '4', amenity: 'Alberca Privada, Selva',
+                desc: 'Propiedades de ultra-lujo en la selva de Tulum. Administraci\u00f3n hotelera incluida.',
+                img: 'assets/img/img_tulum.png',
+                images: [
+                    'assets/img/img_tulum.png',
+                    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1540541338537-1220205ac293?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            4: {
+                title: 'Residencial Aqua', badge: 'Infonavit Total', price: 'Desde $9,500/mes o puntos',
+                beds: '2', baths: '1', amenity: 'Alberca Com\u00fan',
+                desc: 'A 15 minutos en auto de la playa. Enorme alberca central y palapas.',
+                img: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800',
+                images: [
+                    'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800',
+                    'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d?auto=format&fit=crop&q=80&w=800'
+                ]
+            },
+            5: {
+                title: 'Oceana Depas', badge: 'Riviera Maya', price: 'Desde $12,000/mes',
+                beds: '1', baths: '1', amenity: 'Frente al Mar',
+                desc: 'El sue\u00f1o caribe\u00f1o. Estudios y depas a pasos de la arena. Altos rendimientos en renta vacacional.',
+                img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800',
+                images: [
+                    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800',
+                    'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800',
+                    'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800'
+                ]
+            }
+        };
+
+        function showCard(n) {
+            var d = CARDS[n];
+            if (!d) return;
+            showPropertyModal(d);
+        }
+
+        function showPropertyModal(d) {
+            var modal = document.getElementById('propertyModal');
+            if (!modal) return;
+
+            // Set main image
+            var imgEl = document.getElementById('pmMainImg');
+            var imgs = d.images || [d.img];
+            if (imgEl) { imgEl.src = imgs[0]; imgEl.alt = d.title; imgEl.style.opacity = '1'; }
+
+            // Populate thumbnails
+            var tb = document.getElementById('pmThumbnails');
+            if (tb) {
+                tb.innerHTML = '';
+                var labels = ['Exterior', 'Sala', 'Rec\u00e1mara', 'Ba\u00f1o', 'Cocina'];
+                imgs.forEach(function (url, i) {
+                    var wrap = document.createElement('div');
+                    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;';
+                    var img = document.createElement('img');
+                    img.src = url;
+                    img.style.cssText = 'height:65px;width:90px;object-fit:cover;border-radius:8px;transition:all 0.25s;border:' + (i === 0 ? '2px solid #6366f1;box-shadow:0 0 10px rgba(99,102,241,0.4)' : '2px solid rgba(255,255,255,0.1)') + ';';
+                    var lbl = document.createElement('span');
+                    lbl.textContent = labels[i] || ('Foto ' + (i + 1));
+                    lbl.style.cssText = 'font-size:0.65rem;text-transform:uppercase;letter-spacing:0.5px;color:' + (i === 0 ? '#6366f1' : 'rgba(255,255,255,0.4)') + ';transition:color 0.25s;';
+                    wrap.appendChild(img); wrap.appendChild(lbl);
+                    wrap.onclick = function () {
+                        if (imgEl) { imgEl.style.opacity = '0'; setTimeout(function () { imgEl.src = url; imgEl.style.opacity = '1'; }, 180); }
+                        Array.from(tb.children).forEach(function (w) {
+                            var wi = w.querySelector('img'), ws = w.querySelector('span');
+                            if (wi) { wi.style.border = '2px solid rgba(255,255,255,0.1)'; wi.style.boxShadow = 'none'; }
+                            if (ws) ws.style.color = 'rgba(255,255,255,0.4)';
+                        });
+                        img.style.border = '2px solid #6366f1'; img.style.boxShadow = '0 0 10px rgba(99,102,241,0.4)';
+                        lbl.style.color = '#6366f1';
+                    };
+                    tb.appendChild(wrap);
+                });
+            }
+
+            // Text fields
+            var map = { pmBadge: d.badge, pmTitle: d.title, pmPrice: d.price, pmBeds: d.beds, pmBaths: d.baths, pmAmenity: d.amenity, pmDesc: d.desc };
+            for (var k in map) { var el = document.getElementById(k); if (el) el.textContent = map[k] || ''; }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            modal.onclick = function (e) { if (e.target === modal) closePropertyModal(); };
+        }
+
+        function closePropertyModal() {
+            var modal = document.getElementById('propertyModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+</head>
+
+
+<body>
+    <div class="urgency-banner">
+        🔥 <strong>Oportunidad:</strong> Mensualidades bajas y asesoría gratuita. ¡Aprovecha la plusvalía de Quintana
+        Roo antes de que suban los precios!
+    </div>
+
+    <canvas id="bgCanvas" class="background-effects"></canvas>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class='bx bxs-home-heart'></i>
+            <span>Tu Amigo Experto</span>
+        </div>
+
+        <!-- TEMPORIZADOR A NIVEL DEL LOGO EN NAVBAR -->
+        <div id="ofertaTimer"
+            style="display:none;position:relative;margin:0;background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;padding:6px 16px;border-radius:50px;z-index:9500;box-shadow:0 4px 15px rgba(220,38,38,0.5);font-size:0.85rem;white-space:nowrap;text-align:center;">
+            <span style="font-weight:700;">🔥 Oferta termina en: </span>
+            <span style="font-size:1.1rem;font-weight:900;letter-spacing:1px;" id="timerDisplay">23:59:59</span>
+        </div>
+
+        <div class="nav-actions">
+            <button class="lang-toggle" id="langToggle" title="Change Language">
+                🇺🇸 EN
+            </button>
+            <button class="theme-toggle" id="themeToggle" title="Cambiar Tema">
+                <i class='bx bx-sun'></i>
+            </button>
+            <button class="nav-cta" onclick="openLeadModal()">Hablar con un Experto</button>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- 1. Hero Content & Chat (The Hook) -->
+        <section class="hero-section">
+            <!-- ===== NUEVA: HERO VIDEO SECTION eliminado - fondo con gradiente -->
+            <div class="hero-bg-gradient"
+                style="position:absolute;inset:0;background:linear-gradient(135deg,#06091a 0%,#0f1a2e 40%,#1a0e3a 70%,#06091a 100%);z-index:0;pointer-events:none;">
+            </div>
+
+            <div class="section-container hero-grid">
+                <div class="hero-info" data-aos="fade-right" data-aos-duration="1000">
+                    <span class="badge">🌴 Especialistas en Cancún y Todo México</span>
+                    <h1 id="heroTitle">Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span>
+                    </h1>
+                    <p class="subtitle">Descubre cómo aprovechar tus puntos Infonavit o expeditar tu venta.
+                        Transformamos trámites complejos en una experiencia increíble, estés donde estés.</p>
+
+                    <!-- Trust Logos at the top level for authority -->
+                    <div class="trust-logos">
+                        <p>Tramitamos tu crédito con seguridad a través de:</p>
+                        <div class="logos-container">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Logotipo_de_Infonavit.svg"
+                                alt="Infonavit">
+                            <span class="bank-logo fovissste">FOVISSSTE</span>
+                            <span class="bank-logo">BBVA</span>
+                            <span class="bank-logo">Santander</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-wrapper" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="glass-panel chat-container">
+                        <div class="chat-header">
+                            <div class="avatar">
+                                <img src="assets/img/avatar.png" alt="Juan, Tu Amigo Experto">
+                                <span class="status-dot"></span>
+                            </div>
+                            <div class="agent-info">
+                                <h2>Juan, Tu Amigo Experto <button id="playAudioBtn" class="audio-btn"
+                                        title="Escuchar Mensaje" onclick="playWelcomeAudio()"><i
+                                            class='bx bx-play-circle'></i></button></h2>
+                                <span class="status-text">Asesor Senior en Línea</span>
+                            </div>
+                            <button class="action-btn" title="Reiniciar chat" onclick="resetChat()">
+                                <i class='bx bx-refresh'></i>
+                            </button>
+                        </div>
+
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Messages will be injected by JS -->
+                        </div>
+
+                        <div class="chat-input-area">
+                            <div class="typing-indicator hidden" id="typingIndicator">
+                                Escribiendo<span>.</span><span>.</span><span>.</span>
+                            </div>
+                            <form id="chatForm">
+                                <input type="text" id="userInput" placeholder="Escribe tu mensaje aquí..."
+                                    autocomplete="off">
+                                <button type="submit" id="sendBtn" title="Enviar"><i class='bx bx-send'></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Properties (Desire) -->
+        <section id="propiedades" class="properties-section" data-aos="fade-up" data-aos-duration="800">
+            <div class="section-container">
+                <h2 class="section-title">🏆 Desarrollos Destacados</h2>
+
+                <div class="property-filters-advanced" data-aos="fade-up" data-aos-delay="100">
+                    <div class="filter-group">
+                        <label>📍 Ubicación</label>
+                        <select id="filterLocation">
+                            <option value="all">Todas las ciudades</option>
+                            <option value="cancun">Cancún</option>
+                            <option value="merida">Mérida</option>
+                            <option value="tulum">Tulum</option>
+                            <option value="playa">Playa del Carmen</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>🏠 Recámaras</label>
+                        <select id="filterBeds">
+                            <option value="0">Cualquier número</option>
+                            <option value="1">1+ Recámara</option>
+                            <option value="2">2+ Recámaras</option>
+                            <option value="3">3+ Recámaras</option>
+                            <option value="4">4+ Recámaras</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>💰 Presupuesto</label>
+                        <select id="filterPrice">
+                            <option value="all">Cualquiera</option>
+                            <option value="low">Bajo $1M</option>
+                            <option value="mid">$1M - $2M</option>
+                            <option value="high">Más de $2M</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>🔑 Entrega</label>
+                        <select id="filterDelivery">
+                            <option value="all">Ver todas</option>
+                            <option value="Preventa">Preventa</option>
+                            <option value="Entrega Inmediata">Entrega Inmediata</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="property-carousel">
+                    <div class="property-cards centered-cards" id="propertyGrid">
+                        <!-- Las tarjetas se generan dinámicamente desde script.js -->
+                        <div
+                            style="grid-column: 1/-1; text-align: center; color: rgba(255,255,255,0.3); padding: 40px;">
+                            <i class='bx bx-loader-alt bx-spin' style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>Cargando desarrollos preferidos...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Points Simulator (Engagement & Lead Capture) -->
+        <section class="simulator-section" data-aos="zoom-in" data-aos-duration="800">
+            <div class="glass-panel simulator-container">
+                <div class="simulator-header">
+                    <i class='bx bx-calculator'></i>
+                    <h2>Simulador Rápido de Crédito</h2>
+                    <p>Calcula tu potencial de compra en menos de 1 minuto sin compromisos.</p>
+                </div>
+                <div class="simulator-body" data-aos="fade-up" data-aos-delay="200">
+                    <div class="form-group">
+                        <label>Tu Edad</label>
+                        <input type="number" id="sim-age" min="18" max="70" placeholder="Ej: 30"
+                            style="pointer-events: auto;">
+                    </div>
+                    <div class="form-group">
+                        <label>Sueldo Mensual Cotizado</label>
+                        <input type="number" id="sim-salary" placeholder="Ej: 15000" style="pointer-events: auto;">
+                    </div>
+                    <button class="submit-btn" onclick="calculatePoints()">Calcular Mi Potencial</button>
+
+                    <div id="sim-result" class="sim-result hidden">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NUEVA: SIMULADOR DE CRÉDITO GAMIFICADO ===== -->
+        <section class="simulator-section" data-aos="fade-up" data-aos-duration="800" id="simulador">
+            <div class="section-container">
+                <h2 class="section-title">📊 Simulador de Crédito Interactivo</h2>
+                <p class="section-subtitle">Calcula tu poder de compra en segundos. ¡Mueve los controles!</p>
+
+                <div class="simulador-grid">
+                    <!-- Controles (Sliders) -->
+                    <div class="simulador-controls glass-panel">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Tu Ingreso Mensual Libre</label>
+                                <span id="ingreso-val" class="slider-value">$25,000</span>
+                            </div>
+                            <input type="range" id="sim-ingreso" min="10000" max="150000" step="1000" value="25000"
+                                class="styled-slider" oninput="updateSimulator()">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Tu Edad Actual</label>
+                                <span id="edad-val" class="slider-value">30 años</span>
+                            </div>
+                            <input type="range" id="sim-edad" min="18" max="65" step="1" value="30"
+                                class="styled-slider" oninput="updateSimulator()">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label>Ahorro Previo (Enganche/SSV)</label>
+                                <span id="ahorro-val" class="slider-value">$50,000</span>
+                            </div>
+                            <input type="range" id="sim-ahorro" min="0" max="1000000" step="10000" value="50000"
+                                class="styled-slider" oninput="updateSimulator()">
+                        </div>
+                    </div>
+
+                    <!-- Resultados Visuales -->
+                    <div class="simulador-results">
+                        <div class="result-card primary-result glass-panel">
+                            <h3>Poder de Compra Total</h3>
+                            <div class="giant-amount" id="res-poder">$950,000</div>
+                            <div class="chart-container">
+                                <div class="pie-chart" id="sim-chart"></div>
+                            </div>
+                        </div>
+
+                        <div class="result-breakdown">
+                            <div class="breakdown-item glass-panel">
+                                <span><i class='bx bx-credit-card'></i> Crédito</span>
+                                <strong id="res-credito">$900,000</strong>
+                            </div>
+                            <div class="breakdown-item glass-panel">
+                                <span><i class='bx bx-wallet'></i> Tu Ahorro</span>
+                                <strong id="res-ahorro">$50,000</strong>
+                            </div>
+                            <div class="breakdown-item glass-panel highlight">
+                                <span><i class='bx bx-calendar'></i> Pago Mensual</span>
+                                <strong id="res-mensualidad">$7,500</strong>
+                            </div>
+                        </div>
+
+                        <button class="submit-btn" onclick="openLeadModal()" style="margin-top:1.5rem; width:100%;">
+                            ¡Quiero usar este presupuesto!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NUEVA: SIMULADOR DE PLUSVALÍA ===== -->
+        <section class="plusvalia-section" data-aos="fade-up" data-aos-duration="800" id="plusvalia">
+            <div class="section-container">
+                <h2 class="section-title">📈 Simulador de Plusvalía</h2>
+                <p class="section-subtitle">Descubre cuánto valdrá tu inversión en el tiempo</p>
+                <div class="plusvalia-body">
+                    <div class="plusvalia-inputs">
+                        <div class="form-group">
+                            <label>Precio de compra (MXN)</label>
+                            <input type="number" id="pv-precio" placeholder="Ej: 1200000" oninput="calcPlusvalia()">
+                        </div>
+                        <div class="form-group">
+                            <label>Zona de la propiedad</label>
+                            <select id="pv-zona" onchange="calcPlusvalia()">
+                                <option value="12">Cancún (12% anual)</option>
+                                <option value="15">Tulum (15% anual)</option>
+                                <option value="9">Mérida (9% anual)</option>
+                                <option value="10">Riviera Maya (10% anual)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Años de inversión</label>
+                            <input type="range" id="pv-years" min="1" max="15" value="5"
+                                oninput="calcPlusvalia(); document.getElementById('pv-years-val').textContent=this.value">
+                            <span id="pv-years-val" style="color:var(--primary);font-weight:700;">5 años</span>
+                        </div>
+                    </div>
+                    <div class="plusvalia-result" id="pvResult">
+                        <div id="pvChart" class="pv-bars"></div>
+                        <div class="pv-summary" id="pvSummary">
+                            <p style="color:var(--text-muted);">Introduce el precio de tu propiedad para ver la
+                                proyección</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Value Proposition (Features Band - Logic) -->
+        <section class="value-prop-section" data-aos="fade-up" data-aos-duration="800">
+            <div class="section-container">
+                <h2 class="section-title">¿Por qué dejas tus trámites a <span>Tu Amigo Experto</span>?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-book-open'></i></div>
+                        <h3>Educación desde Cero</h3>
+                        <p>Te explicamos qué es la Subcuenta, Precalificación y Escrituración de forma clara y sin
+                            tecnicismos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-group'></i></div>
+                        <h3>Unamos Créditos</h3>
+                        <p>Junta tus puntos Infonavit con tu pareja, amigos o familiares para alcanzar tu meta más
+                            rápido.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bxs-shield-alt-2'></i></div>
+                        <h3>Compra Segura</h3>
+                        <p>Te guiamos paso a paso en la compra de tu propiedad con Alberca, Escuelas, Canchas
+                            deportivas, etc.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-wrapper"><i class='bx bx-tachometer'></i></div>
+                        <h3>Velocidad Nacional</h3>
+                        <p>Nosotros nos encargamos de todos los trámites para que tú solo disfrutes el resultado de las
+                            llaves.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Myths vs Reality (Education & Hook) -->
+        <section class="myths-section" data-aos="fade-up" data-aos-duration="800">
+            <h2 class="section-title">Destruyendo Mitos del Infonavit 🔨</h2>
+            <div class="myths-grid">
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-ghost'></i>
+                            <h3>Mito</h3>
+                            <p>"Si uno mis puntos con otra persona, la casa será solo de uno de los dos."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-check-shield'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Falso! Con <strong>Unamos Créditos</strong> ambos son dueños legales bajo la figura de
+                                Copropiedad. Tu inversión está 100% protegida.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-time'></i>
+                            <h3>Mito</h3>
+                            <p>"Autorizar y escriturar con Infonavit tarda muchísimos meses."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-rocket'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Para nada! Nosotros agilizamos avalúos y gestión. Normalmente en <strong>3 a 5
+                                    semanas</strong> ya te estamos entregando tus llaves.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="myth-card">
+                    <div class="myth-inner">
+                        <div class="myth-front">
+                            <i class='bx bx-x-circle'></i>
+                            <h3>Mito</h3>
+                            <p>"No puedo comprar una casa usada a un particular con mi crédito."</p>
+                            <span class="flip-hint">Toca para ver la verdad</span>
+                        </div>
+                        <div class="myth-back">
+                            <i class='bx bx-home-heart'></i>
+                            <h3>Verdad</h3>
+                            <p>¡Claro que puedes! Nosotros somos expertos en <strong>Venta de Terceros</strong>. Nos
+                                aseguramos de destrabar los trámites para que la compra sea legal y segura.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Testimonial (Social Proof Marquee) -->
+        <section class="testimonial-section" data-aos="zoom-in" data-aos-duration="800">
+            <h2 class="section-title" style="margin-bottom: 2rem;">Lo que dicen nuestros clientes 🤝</h2>
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    <!-- Original -->
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Sofia+M&background=0ea5e9&color=fff&rounded=true"
+                                alt="Sofía" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito."</p>
+                        <strong>- Sofía M.</strong>
+                    </div>
+                    <!-- New ones -->
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Carlos+R&background=10b981&color=fff&rounded=true"
+                                alt="Carlos" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"El proceso fue súper rápido. En 3 semanas ya estábamos firmando escrituras."</p>
+                        <strong>- Carlos R.</strong>
+                    </div>
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Ana+L&background=f59e0b&color=fff&rounded=true"
+                                alt="Ana" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"Me consiguieron el departamento exacto que quería frente al mar. ¡10/10!"</p>
+                        <strong>- Ana L.</strong>
+                    </div>
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Miguel+A&background=8b5cf6&color=fff&rounded=true"
+                                alt="Miguel" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"Vendieron mi casa en tiempo récord y sin vueltas legales. Excelente servicio."</p>
+                        <strong>- Miguel A.</strong>
+                    </div>
+                    <!-- Cloned for seamless loop -->
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Sofia+M&background=0ea5e9&color=fff&rounded=true"
+                                alt="Sofía" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito."</p>
+                        <strong>- Sofía M.</strong>
+                    </div>
+                    <div class="test-card glass-panel">
+                        <div class="test-header">
+                            <img src="https://ui-avatars.com/api/?name=Carlos+R&background=10b981&color=fff&rounded=true"
+                                alt="Carlos" class="test-img-small">
+                            <div class="stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <p>"El proceso fue súper rápido. En 3 semanas ya estábamos firmando escrituras."</p>
+                        <strong>- Carlos R.</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. FAQ Accordion -->
+        <section class="faq-section" data-aos="fade-up" data-aos-duration="800">
+            <h2 class="section-title">Preguntas Frecuentes resueltas rápido ⚡</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Tiene algún costo tu asesoría inicial?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p><strong>¡Absolutamente ninguno!</strong> Mi primer objetivo es analizar tu caso, ver tus
+                            puntos y trazarte un plan. Solo ganamos si tú logras comprar o vender tu casa de forma
+                            exitosa.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo comprar en Cancún si vivo en otro Estado?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>¡Por supuesto! De hecho, nuestro fuerte es ayudar a personas de todo México a invertir en el
+                            paraíso. Nosotros coordinamos los trámites a distancia para que tú solo vengas a disfrutar
+                            tu nueva casa.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>¿Puedo unir mis puntos si no estoy casado?</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>¡Sí! Ya no es necesario estar casados. Puedes unir tu crédito con un familiar (padres,
+                            hermanos) o un amigo(a) y comprar juntos una mejor propiedad dividiendo los gastos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NUEVA: MAPA DE UBICACIONES ===== -->
+        <section class="mapa-section" data-aos="fade-up" data-aos-duration="800" id="mapa">
+            <div class="section-container">
+                <h2 class="section-title">📍 Nuestros Desarrollos en el Mapa</h2>
+                <p class="section-subtitle">Propiedades estratégicamente ubicadas en el paraíso mexicano</p>
+                <div class="mapa-wrapper">
+                    <div class="mapa-pins" id="mapaPinsContainer">
+                        <!-- Generado Dinámicamente -->
+                    </div>
+                    <div class="mapa-embed">
+                        <iframe id="mapaFrame"
+                            src="https://maps.google.com/maps?q=Cancun+Centro,Quintana+Roo,Mexico&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            style="width:100%;height:420px;border:0;border-radius:12px;" allowfullscreen loading="lazy">
+                        </iframe>
+                    </div>
+                    <div class="mapa-info" id="mapaInfo">
+                        <h3>🏙️ Depas Cancún Centro</h3>
+                        <p>Zona turística y comercial premium. A 15 min de la playa. Acceso a todas las avenidas
+                            principales.</p>
+                        <button class="submit-btn" onclick="showCard(1)">Ver Propiedad</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== NUEVA: POPUP EXIT INTENT ===== -->
+    <div id="exitPopup"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+        <div
+            style="background:linear-gradient(135deg,#0f1a2e,#1a0e3a);border:1px solid rgba(99,102,241,0.5);border-radius:20px;padding:3rem;max-width:480px;text-align:center;position:relative;">
+            <button onclick="document.getElementById('exitPopup').style.display='none'"
+                style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.1);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;">✕</button>
+            <div style="font-size:3rem;margin-bottom:1rem;">🏠</div>
+            <h2 style="color:#a78bfa;margin-bottom:0.5rem;font-size:1.6rem;">¡Espera! Oferta Especial</h2>
+            <p style="color:#94a3b8;line-height:1.6;margin-bottom:1.5rem;">Antes de irte, agenda tu asesoría GRATIS y
+                descubre cuánto crédito puedes obtener <strong style="color:white;">sin costo ni compromiso.</strong>
+            </p>
+            <div
+                style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:10px;padding:1rem;margin-bottom:1.5rem;">
+                <p style="color:#6366f1;font-weight:700;font-size:1.1rem;">✅ 100% Gratis · Sin Compromiso · Hoy Mismo
+                </p>
+            </div>
+            <button onclick="openLeadModal(); document.getElementById('exitPopup').style.display='none';"
+                style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:white;border-radius:10px;cursor:pointer;font-size:1rem;font-weight:700;margin-bottom:0.8rem;">🚀
+                Quiero mi Asesoría Gratis</button>
+            <button onclick="document.getElementById('exitPopup').style.display='none'"
+                style="background:none;border:none;color:#64748b;cursor:pointer;font-size:0.85rem;">No gracias, me lo
+                pierdo</button>
+        </div>
+    </div>
+    <!-- FIN POPUP EXIT INTENT -->
+    <a href="https://wa.me/529983008729?text=Hola%20Juan%2C%20vi%20tu%20sitio%20y%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20las%20propiedades."
+        target="_blank" id="whatsappBtn"
+        style="position:fixed;bottom:20px;right:20px;background:#25d366;color:white;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:9001;text-decoration:none;animation:pulse 2s infinite;">
+        <i class='bx bxl-whatsapp'></i>
+    </a>
+
+    <!-- 8. Footer -->
+    <footer class="main-footer">
+        <div class="section-container footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class='bx bxs-home-heart'></i>
+                    <span>Tu Amigo Experto</span>
+                </div>
+                <p>Tu aliado para comprar o vender propiedades en Cancún, Riviera Maya y México de forma segura,
+                    garantizando tu inversión.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#" onclick="openLeadModal()">Agendar Asesoría</a></li>
+                    <li><a href="#propiedades">Desarrollos Destacados</a></li>
+                    <li><a href="#simulador"
+                            onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})">Simulador
+                            de Crédito</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contacto Premium</h4>
+                <p><i class='bx bx-map'></i> Cancún, Quintana Roo, México</p>
+                <p><i class='bx bxl-whatsapp'></i> +52 998 300 8729</p>
+                <div class="social-icons">
+                    <a href="#"><i class='bx bxl-facebook-circle'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-tiktok'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Tu Amigo Experto. Todos los derechos reservados. <a href="#">Aviso de Privacidad</a></p>
+        </div>
+    </footer>
+
+    <!-- FOMO Alert Container -->
+    <div id="fomo-container" class="fomo-container"></div>
+
+    <!-- Lead Modal / Form -->
+    <div class="modal-overlay" id="leadModal">
+        <div class="modal-content glass-panel" style="max-height: 90vh; overflow-y: auto;">
+            <button class="close-modal" onclick="closeLeadModal()"><i class='bx bx-x'></i></button>
+            <div class="modal-header">
+                <h3 id="leadTitle">🏠 Da el primer paso</h3>
+                <p id="leadDesc">Déjanos tus datos y nos comunicaremos contigo de inmediato vía WhatsApp para agendar tu
+                    asesoría gratuita.</p>
+            </div>
+
+            <form id="leadForm" onsubmit="submitLead(event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono / WhatsApp</label>
+                    <input type="tel" id="phone" required placeholder="Ej. 123 456 7890">
+                </div>
+                <div class="form-group">
+                    <label for="interest">Me interesa principalmente:</label>
+                    <select id="interest" required>
+                        <option value="" disabled selected>Selecciona una opción</option>
+                        <option value="comprar">Comprar una propiedad</option>
+                        <option value="vender">Vender mi propiedad</option>
+                        <option value="inversion">Invertir en Riviera Maya</option>
+                        <option value="puntos">Saber sobre mis puntos Infonavit</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <div style="flex:1;">
+                        <label for="date">Fecha de Contacto</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div style="flex:1;">
+                        <label for="time">Hora de Contacto</label>
+                        <input type="time" id="time" required>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn"><i class='bx bxl-whatsapp'></i> Hablar por WhatsApp</button>
+            </form>
+
+            <div id="successMessage" class="success-message hidden">
+                <i class='bx bx-check-circle'></i>
+                <h4>¡Redirigiendo a WhatsApp!</h4>
+                <p>Si no se abre automáticamente, haz clic en el botón de abajo.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Modal -->
+    <div id="propertyModal">
+        <div class="modal-content property-modal-content">
+            <button class="close-btn" onclick="closePropertyModal()"><i class='bx bx-x'></i></button>
+
+            <div class="prop-modal-grid">
+                <!-- Gallery: main image + thumbnails + map -->
+                <div class="prop-gallery">
+                    <img id="pmMainImg" src="" alt="Propiedad">
+                    <div id="pmThumbnails"></div>
+                    <div class="pm-map-container" id="pmMapContainer"
+                        style="display: none; width: 100%; flex-grow: 1; padding: 15px; box-sizing: border-box; background: #000;">
+                        <iframe id="pmMapIframe" src=""
+                            style="width: 100%; height: 100%; min-height: 250px; border: 0; border-radius: 8px;"
+                            allowfullscreen loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <!-- Property Info -->
+                <div class="prop-details">
+                    <span class="prop-badge" id="pmBadge"></span>
+                    <h2 id="pmTitle"></h2>
+                    <p class="pm-price" id="pmPrice"></p>
+                    <div id="unitSelector" class="unit-selector"></div>
+                    <div class="pm-features">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                    <p class="pm-description" id="pmDesc"></p>
+                    <button class="pm-cta" onclick="openLeadModal(); closePropertyModal();">
+                        <i class='bx bxl-whatsapp'></i> ¡Me interesa! Agendar Visita
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Phase 7: Exit-Intent Lead Magnet Popup -->
+    <div class="modal-overlay" id="exitModal">
+        <div class="modal-content glass-panel" style="text-align: center; max-width: 450px;">
+            <button class="close-btn" onclick="closeExitModal()"><i class='bx bx-x'></i></button>
+            <div class="modal-header">
+                <h3>🎁 ¡No te vayas con las manos vacías!</h3>
+            </div>
+            <img src="https://images.unsplash.com/photo-1593696140826-c58b021acf8b?auto=format&fit=crop&q=80&w=300&h=200"
+                alt="Guía Inmobiliaria" style="width: 100%; border-radius: 12px; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.95rem;">
+                Descarga GRATIS nuestra <strong>"Guía Definitiva: 5 Errores al Comprar con Infonavit en Cancún en
+                    2026"</strong>.
+            </p>
+            <form onsubmit="submitExitLead(event)">
+                <div class="form-group">
+                    <input type="text" id="exitName" required placeholder="Tu Nombre">
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="exitPhone" required placeholder="WhatsApp para enviarte la guía">
+                </div>
+                <button type="submit" class="submit-btn"><i class='bx bxs-download'></i> Enviar Guía a mi
+                    WhatsApp</button>
+            </form>
+            <button class="text-link-btn" onclick="closeExitModal()">No, gracias. Prefiero cometer errores de
+                novato.</button>
+        </div>
+    </div>
+
+    <!-- Phase 9: Floating Video Widget -->
+    <div class="video-widget-container" id="videoWidget">
+        <div class="video-bubble" onclick="toggleVideoWidget()">
+            <video id="miniVideo" autoplay loop muted playsinline>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                <!-- Reemplaza con el link de TU propio video corto de 10 seg -->
+            </video>
+            <div class="pulse-ring"></div>
+            <i class='bx bx-play-circle play-overlay'></i>
+            <span class="video-tooltip">¡Un mensaje de Juan!</span>
+        </div>
+        <div class="video-expanded hidden" id="videoExpanded">
+            <div class="video-expanded-header">
+                <h3>Un mensaje para ti</h3>
+                <i class='bx bx-x close-video' onclick="closeVideoWidget()"></i>
+            </div>
+            <video id="mainVideo" controls playsinline>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                <!-- Reemplaza con el link de TU propio video de ventas largo -->
+            </video>
+            <div class="video-expanded-body">
+                <p>Descubre en 30 segundos cómo miles de familias ya obtuvieron sus llaves con nosotros.</p>
+                <button class="submit-btn" onclick="openLeadModal(); closeVideoWidget();">¡Sí, quiero asesoría!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 7: Advanced WhatsApp Widget -->
+    <div class="wa-widget-container" id="waWidget">
+        <div class="wa-bubble hidden" id="waBubble">
+            <div class="wa-bubble-header">
+                <img src="assets/img/avatar.png" alt="Juan">
+                <div>
+                    <strong>Juan | Experto</strong>
+                    <span>En línea ahora</span>
+                </div>
+                <i class='bx bx-x close-wa' onclick="closeWaBubble(event)"></i>
+            </div>
+            <div class="wa-bubble-body">
+                <p>¡Hola 👋! Tengo 5 minutos libres en la agenda. ¿Tienes alguna duda rápida sobre tus puntos o
+                    desarrollos?</p>
+            </div>
+            <a href="https://wa.me/529983008729?text=Hola%20Juan%2C%20estoy%20en%20tu%20p%C3%A1gina%20y%20me%20encantar%C3%ADa%20hacerte%20una%20pregunta%20r%C3%A1pida%20%F0%9F%A4%9D"
+                target="_blank" class="wa-bubble-btn">
+                <i class='bx bxl-whatsapp'></i> Responder a Juan
+            </a>
+        </div>
+        <button class="wa-fab" onclick="toggleWaBubble()">
+            <i class='bx bxl-whatsapp'></i>
+        </button>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-box glass-panel">
+            <h3>🔒 Acceso Restringido</h3>
+            <p style="color:var(--text-muted); font-size: 0.85rem; margin-top: 10px;">Ingresa la clave de administrador
+                para habilitar edición.</p>
+            <input type="password" id="adminKey" maxlength="4" placeholder="••••">
+            <button onclick="handleAdminLogin()">Desbloquear</button>
+            <button onclick="closeAdminModal()"
+                style="background:transparent; color: #888; font-size: 0.8rem; margin-top: 10px;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Admin Top Toolbar -->
+    <div id="adminToolbar" class="admin-toolbar">
+        <span>🛠️ MODO EDITOR ACTIVO</span>
+        <div>
+            <button onclick="exportNewConfig()">💾 EXPORTAR CONFIG.JS</button>
+            <button onclick="disableEditorMode()" style="background: rgba(0,0,0,0.2); color: white;">SALIR</button>
+        </div>
+    </div>
+
+    <!-- Hidden File Input for Admin Image Picker -->
+    <input type="file" id="adminFilePicker" style="display:none;" accept="image/*">
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+    <!-- Phase 11: 3D Model Viewer Web Component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Map Editor Modal (Hidden by default) -->
+    <div class="modal-overlay" id="locationPickerModal" style="display: none; z-index: 999999;">
+        <div class="modal-content glass-panel" style="max-width: 700px; padding: 20px; text-align: left;">
+            <button class="close-btn" onclick="closeLocationPicker()"><i class='bx bx-x'></i></button>
+            <h3 style="color:var(--primary); margin-bottom: 10px;">📍 Selecciona la Ubicación</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Mueve el mapa y haz clic para fijar la
+                ubicación exacta del desarrollo.</p>
+
+            <div id="lfMapContainer"
+                style="width: 100%; height: 400px; border-radius: 12px; margin-bottom:15px; background: #222;"></div>
+
+            <div
+                style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom:15px; border: 1px solid rgba(255,255,255,0.1);">
+                <span style="font-size:0.75rem; color:#888;">Dirección Identificada:</span>
+                <div id="lfAddressText" style="color: white; font-weight:600; font-size: 0.9rem; margin-top:5px;">Da
+                    clic en el mapa...</div>
+            </div>
+
+            <button class="submit-btn" id="lfConfirmBtn" style="width:100%;" disabled>Confirmar y Guardar</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config/config.js?v=4.8"></script>
+    <script src="assets/js/script.js?v=4.8"></script>
+    <script>
+        AOS.init({ once: true, offset: 50 });
+    </script>
+</body>
+
+</html>

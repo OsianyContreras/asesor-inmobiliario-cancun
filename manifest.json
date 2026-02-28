@@ -1,0 +1,21 @@
+{
+    "name": "Tu Amigo Experto - Asesor Inmobiliario",
+    "short_name": "Amigo Experto",
+    "description": "Tu hogar ideal, sin estrés ni complicaciones. Expertos en Riviera Maya, Cancún y Mérida.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#06091a",
+    "theme_color": "#0f1a2e",
+    "icons": [
+        {
+            "src": "assets/img/avatar.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/img/avatar.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
