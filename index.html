@@ -657,17 +657,16 @@
                 <h2 class="section-title">🏆 Desarrollos Destacados</h2>
 
                 <!-- AI Matchmaker Search Bar -->
-                <div class="ai-matchmaker" data-aos="fade-up" data-aos-delay="50">
+                <div class="ai-matchmaker">
                     <div class="ai-matchmaker-inner glass-panel">
                         <i class='bx bx-sparkles ai-icon'></i>
-                        <input type="text" id="aiSearchInput"
-                            placeholder="Busco una casa para familia con alberca cerca de Tulum y tengo 1.5 M..."
+                        <input type="text" id="aiSearchInput" placeholder="Describe tu hogar ideal o presupuesto..."
                             autocomplete="off">
                         <button id="aiVoiceBtn" class="ai-voice-btn" onclick="startVoiceRecognition()"
                             title="Buscar con voz">
                             <i class='bx bx-microphone'></i>
                         </button>
-                        <button id="aiSearchBtn" onclick="searchWithAI()">
+                        <button id="aiSearchBtn" class="ai-search-primary" onclick="searchWithAI()">
                             <span class="btn-text">Buscar con IA</span>
                             <i class='bx bx-loader-alt bx-spin ai-spinner hidden'></i>
                         </button>
@@ -1202,10 +1201,13 @@
                     <img id="pmMainImg" src="" alt="Propiedad">
                     <div id="pmThumbnails"></div>
 
-                    <!-- 3D / AR Container -->
                     <div id="threed-container">
                         <model-viewer id="pmModelViewer" src="" ar ar-modes="webxr scene-viewer quick-look"
-                            camera-controls poster="assets/img/avatar.png" shadow-intensity="1" auto-rotate>
+                            camera-controls shadow-intensity="1" auto-rotate>
+                            <div slot="poster" class="model-loading-screen">
+                                <div class="model-spinner"></div>
+                                <span>Cargando Mundo 3D...</span>
+                            </div>
                             <button slot="ar-button" class="ar-view-btn">
                                 <i class='bx bx-cube-alt'></i> Ver en mi espacio (AR)
                             </button>

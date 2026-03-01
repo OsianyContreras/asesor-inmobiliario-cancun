@@ -196,14 +196,34 @@ function openPropertyModal(id) {
     const cinematicImg = document.getElementById('cinematicImg');
     const imagesArray = data.images || [];
 
-    // Reset default view: show image, hide 3D and Cinematic
-    if (pmMainImg) pmMainImg.style.display = 'block';
-    if (threedContainer) threedContainer.classList.remove('active');
-    if (cinematicContainer) cinematicContainer.classList.remove('active');
+    // Reset default view logic: 
+    // If there is a 3D model, show it directly. Otherwise, show the image.
+    const hasModel = (data.model3d && data.model3d.trim() !== '');
 
-    if (pmMainImg && imagesArray.length > 0) {
-        pmMainImg.src = imagesArray[0];
-        pmMainImg.alt = data.title || 'Propiedad';
+    if (hasModel) {
+        if (pmMainImg) pmMainImg.style.display = 'none';
+        if (threedContainer) {
+            threedContainer.style.display = 'block';
+            threedContainer.classList.add('active');
+            if (pmModelViewer) pmModelViewer.src = data.model3d;
+        }
+        if (cinematicContainer) cinematicContainer.style.display = 'none';
+    } else {
+        if (pmMainImg) {
+            pmMainImg.style.display = 'block';
+            if (imagesArray.length > 0) {
+                pmMainImg.src = imagesArray[0];
+                pmMainImg.alt = data.title || 'Propiedad';
+            }
+        }
+        if (threedContainer) {
+            threedContainer.style.display = 'none';
+            threedContainer.classList.remove('active');
+        }
+        if (cinematicContainer) {
+            cinematicContainer.style.display = 'none';
+            cinematicContainer.classList.remove('active');
+        }
     }
 
     const pmThumbnails = document.getElementById('pmThumbnails');
@@ -262,6 +282,11 @@ function openPropertyModal(id) {
             Array.from(pmThumbnails.querySelectorAll('img')).forEach(i => i.style.border = '2px solid rgba(255,255,255,0.1)');
             btn3d.querySelector('div').style.borderColor = 'var(--primary)';
         };
+        if (hasModel) {
+            btn3d.querySelector('div').style.borderColor = 'var(--primary)';
+            btn3d.querySelector('span').style.color = 'var(--primary)';
+        }
+
         pmThumbnails.appendChild(btn3d);
 
         const roomLabels = (activeLang === 'en') ? ['Exterior', 'Living', 'Bedroom', 'Bath', 'Kitchen'] : ['Exterior', 'Sala', 'Recámara', 'Baño', 'Cocina'];
