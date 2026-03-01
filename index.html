@@ -1056,36 +1056,39 @@
             <div class="prop-modal-grid">
                 <!-- Gallery: main image + thumbnails + map -->
                 <div class="prop-gallery">
-                    <img id="pmMainImg" src="" alt="Propiedad">
-                    <div id="pmThumbnails"></div>
+                    <div class="prop-viewer-stage">
+                        <!-- All view modes share the same stage -->
+                        <img id="pmMainImg" class="active" src="" alt="Propiedad">
 
-                    <div id="threed-container">
-                        <model-viewer id="pmModelViewer" src="" ar ar-modes="webxr scene-viewer quick-look"
-                            camera-controls shadow-intensity="1" auto-rotate>
-                            <div slot="poster" class="model-loading-screen">
-                                <div class="model-spinner"></div>
-                                <span>Cargando Mundo 3D...</span>
+                        <div id="threed-container">
+                            <model-viewer id="pmModelViewer" src="" ar ar-modes="webxr scene-viewer quick-look"
+                                camera-controls shadow-intensity="1" auto-rotate>
+                                <div slot="poster" class="model-loading-screen">
+                                    <div class="model-spinner"></div>
+                                    <span>Cargando Mundo 3D...</span>
+                                </div>
+                                <button slot="ar-button" class="ar-view-btn">
+                                    <i class='bx bx-cube-alt'></i> Ver en mi espacio (AR)
+                                </button>
+                            </model-viewer>
+                        </div>
+
+                        <!-- Cinematic / Inmersive Photo Container (Fallback) -->
+                        <div id="cinematic-container" class="cinematic-container">
+                            <img id="cinematicImg" class="cinematic-img" src="" alt="Cinematic View">
+                            <div class="cinematic-overlay">
+                                <span class="cinematic-badge">🎬 Vista Inmersiva HD</span>
                             </div>
-                            <button slot="ar-button" class="ar-view-btn">
-                                <i class='bx bx-cube-alt'></i> Ver en mi espacio (AR)
-                            </button>
-                        </model-viewer>
-                    </div>
+                        </div>
 
-                    <!-- Cinematic / Inmersive Photo Container (Fallback) -->
-                    <div id="cinematic-container" class="cinematic-container">
-                        <img id="cinematicImg" class="cinematic-img" src="" alt="Cinematic View">
-                        <div class="cinematic-overlay">
-                            <span class="cinematic-badge">🎬 Vista Inmersiva HD</span>
+                        <div class="pm-map-container" id="pmMapContainer">
+                            <iframe id="pmMapIframe" src="" style="width: 100%; height: 100%; border: 0;"
+                                allowfullscreen loading="lazy"></iframe>
                         </div>
                     </div>
 
-                    <div class="pm-map-container" id="pmMapContainer"
-                        style="display: none; width: 100%; flex-grow: 1; padding: 15px; box-sizing: border-box; background: #000;">
-                        <iframe id="pmMapIframe" src=""
-                            style="width: 100%; height: 100%; min-height: 250px; border: 0; border-radius: 8px;"
-                            allowfullscreen loading="lazy"></iframe>
-                    </div>
+                    <!-- Thumbnails bar at the bottom -->
+                    <div id="pmThumbnails"></div>
                 </div>
 
                 <!-- Property Info -->

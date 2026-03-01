@@ -196,37 +196,38 @@ function openPropertyModal(id) {
     const cinematicImg = document.getElementById('cinematicImg');
     const imagesArray = data.images || [];
 
+    const pmThumbnails = document.getElementById('pmThumbnails');
+    const pmMapContainer = document.getElementById('pmMapContainer');
+
+    // Helper: Activar un solo elemento del stage
+    const showStage = (el) => {
+        [pmMainImg, threedContainer, cinematicContainer, pmMapContainer].forEach(e => {
+            if (e) e.classList.remove('active');
+        });
+        if (el) el.classList.add('active');
+    };
+
     // Reset default view logic: 
-    // If there is a 3D model, show it directly. Otherwise, show the image.
+    // If there is a 3D model, show it directly. Otherwise, show the first image.
     const hasModel = (data.model3d && data.model3d.trim() !== '');
 
     if (hasModel) {
-        if (pmMainImg) pmMainImg.style.display = 'none';
-        if (threedContainer) {
-            threedContainer.style.display = 'block';
-            threedContainer.classList.add('active');
-            if (pmModelViewer) pmModelViewer.src = data.model3d;
-        }
-        if (cinematicContainer) cinematicContainer.style.display = 'none';
-    } else {
-        if (pmMainImg) {
-            pmMainImg.style.display = 'block';
-            if (imagesArray.length > 0) {
-                pmMainImg.src = imagesArray[0];
-                pmMainImg.alt = data.title || 'Propiedad';
+        if (pmModelViewer) {
+            pmModelViewer.src = data.model3d;
+            if (typeof pmModelViewer.dismissPosters === 'function') {
+                pmModelViewer.dismissPosters();
             }
         }
-        if (threedContainer) {
-            threedContainer.style.display = 'none';
-            threedContainer.classList.remove('active');
+        showStage(threedContainer);
+    } else {
+        if (pmMainImg && imagesArray.length > 0) {
+            pmMainImg.src = imagesArray[0];
+            pmMainImg.alt = data.title || 'Propiedad';
         }
-        if (cinematicContainer) {
-            cinematicContainer.style.display = 'none';
-            cinematicContainer.classList.remove('active');
-        }
+        showStage(pmMainImg);
     }
 
-    const pmThumbnails = document.getElementById('pmThumbnails');
+
     if (pmThumbnails) {
         pmThumbnails.innerHTML = '';
 
@@ -241,43 +242,24 @@ function openPropertyModal(id) {
             <span style="font-size:0.65rem;color:var(--primary);">VISTA 3D</span>
         `;
         btn3d.onclick = () => {
-            if (pmMainImg) pmMainImg.style.display = 'none';
-
-            // --- DEBUG: Muestra los datos reales en pantalla para el usuario ---
             console.log("3D Modal Debug:", { id, key, modelPath: data.model3d });
-
-            // Logic: Real 3D vs Cinematic 3D
             const modelPath = (data.model3d && typeof data.model3d === 'string') ? data.model3d.trim() : "";
+            const currentSrc = pmModelViewer ? pmModelViewer.getAttribute('src') : "";
 
             if (modelPath !== '') {
-                console.log("3D Loader: Cargando ->", modelPath);
-                if (threedContainer) {
-                    threedContainer.style.display = 'block'; // Fuerza visibilidad
-                    threedContainer.classList.add('active');
-                    if (pmModelViewer) {
-                        // Cambiamos el src directamente para disparar el observador del web component
-                        pmModelViewer.src = modelPath;
-                        // Forzar refresco si el componente ya existe
-                        if (pmModelViewer.dismissPosters) pmModelViewer.dismissPosters();
+                if (pmModelViewer && currentSrc !== modelPath) {
+                    pmModelViewer.src = modelPath;
+                    if (typeof pmModelViewer.dismissPosters === 'function') {
+                        pmModelViewer.dismissPosters();
                     }
                 }
-                if (cinematicContainer) cinematicContainer.classList.remove('active');
-                if (cinematicContainer) cinematicContainer.style.display = 'none';
+                showStage(threedContainer);
             } else {
-                console.warn("3D Loader: No hay modelo 3D. Activando Fallback.");
-                // FALLBACK: Cinematic mode with main image
-                if (cinematicContainer) {
-                    cinematicContainer.style.display = 'block';
-                    cinematicContainer.classList.add('active');
-                    if (cinematicImg) cinematicImg.src = imagesArray[0] || 'placeholder.png';
-                }
-                if (threedContainer) {
-                    threedContainer.classList.remove('active');
-                    threedContainer.style.display = 'none';
-                }
+                if (cinematicImg) cinematicImg.src = imagesArray[0] || 'placeholder.png';
+                showStage(cinematicContainer);
             }
 
-            // Highlight 3D button
+            // UI feedback for 3D button
             Array.from(pmThumbnails.querySelectorAll('.thumb-wrapper div')).forEach(d => d.style.borderColor = 'rgba(255,255,255,0.1)');
             Array.from(pmThumbnails.querySelectorAll('img')).forEach(i => i.style.border = '2px solid rgba(255,255,255,0.1)');
             btn3d.querySelector('div').style.borderColor = 'var(--primary)';
@@ -330,15 +312,13 @@ function openPropertyModal(id) {
 
             wrapper.onclick = () => {
                 if (pmMainImg) {
-                    pmMainImg.style.display = 'block';
                     pmMainImg.src = imgUrl;
                 }
-                if (threedContainer) threedContainer.classList.remove('active');
-                if (cinematicContainer) cinematicContainer.classList.remove('active');
+                showStage(pmMainImg);
 
                 // Clear highlights
                 Array.from(pmThumbnails.querySelectorAll('img')).forEach(i => i.style.border = '2px solid rgba(255,255,255,0.1)');
-                Array.from(pmThumbnails.querySelectorAll('.thumb-wrapper div')).forEach(d => d.style.borderColor = 'rgba(255,255,255,0.1)'); // Target the inner div for 3D button
+                Array.from(pmThumbnails.querySelectorAll('.thumb-wrapper div')).forEach(d => d.style.borderColor = 'rgba(255,255,255,0.1)');
                 Array.from(pmThumbnails.querySelectorAll('span')).forEach(s => s.style.color = 'rgba(255,255,255,0.4)');
 
                 thumbElement.style.border = '2px solid var(--primary)';
@@ -2964,5 +2944,5 @@ async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
     }
 }
 
-console.log('?? CHAPARRA V9.9 Loaded - AI Search & 3D Direct Active');
-window.APP_VERSION = '9.9';
+console.log("🚀 CHAPARRA V11.0 Loaded - Stage System Active");
+window.APP_VERSION = "11.0";

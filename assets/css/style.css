@@ -1680,6 +1680,50 @@ body.light-theme .marquee-container::after {
     }
 }
 
+.prop-viewer-stage {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    /* Ensure children don't overflow */
+}
+
+.prop-viewer-stage>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.prop-viewer-stage>.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.threed-container,
+.cinematic-container {
+    /* height removed as it will inherit from .prop-viewer-stage */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* Example for a stable gallery grid */
+    gap: 1rem;
+}
+
+.pm-map-container {
+    background: #000;
+    z-index: 5;
+}
+
 .breakdown-item {
     padding: 1.5rem;
     border-radius: 15px;
@@ -2415,15 +2459,39 @@ body.light-theme .wa-bubble {
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--border-color);
+    overflow: hidden;
+    /* Evita fugas de hijos absolutos */
+}
+
+/* Nuevo contenedor maestro para visor */
+.prop-viewer-stage {
+    position: relative;
+    flex: 1;
+    /* Toma todo el espacio disponible arriba de los thumbs */
+    min-height: 280px;
+    background: #000;
+}
+
+/* Comportamiento base de todos los visores */
+.prop-viewer-stage>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    /* Ocultos por defecto */
+    transition: opacity 0.3s ease;
+}
+
+/* Mostrar solo el que tenga la clase active */
+.prop-viewer-stage>.active {
+    display: block !important;
+    /* !important para sobreescribir estilos inline del JS */
 }
 
 #pmMainImg {
-    width: 100%;
-    height: 280px;
     object-fit: cover;
-    display: block;
-    flex-shrink: 0;
-    transition: opacity 0.2s ease;
 }
 
 #pmThumbnails {
@@ -3114,22 +3182,7 @@ body.editor-mode {
 }
 
 #threed-container {
-    width: 100%;
-    height: 400px;
     background: #000;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    position: relative;
-    display: none;
-}
-
-@media (max-width: 768px) {
-
-    #threed-container,
-    .cinematic-container {
-        height: 300px;
-    }
 }
 
 #threed-container.active {
