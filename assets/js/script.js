@@ -2944,5 +2944,5 @@ async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
     }
 }
 
-console.log("🚀 CHAPARRA V11.0 Loaded - Stage System Active");
-window.APP_VERSION = "11.0";
+console.log("🚀 CHAPARRA V12.0 Loaded - Multiplatform Stage Fixed");
+window.APP_VERSION = "12.0";
