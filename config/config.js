@@ -677,9 +677,9 @@ const AppConfig = {
                     "assets/img/cancun_sala.png",
                     "assets/img/cancun_recamara.png",
                     "assets/img/cancun_exterior.png",
-                    "assets/img/cancun_sala.png",
-                    "assets/img/nave.png"
+                    "assets/img/cancun_sala.png"
                 ],
+                "model3d": "assets/3d/Mundo.glb",
                 "units": [
                     {
                         "name": "PLANTA BAJA",
@@ -816,9 +816,9 @@ const AppConfig = {
                     "assets/img/cancun_sala.png",
                     "assets/img/cancun_recamara.png",
                     "assets/img/cancun_exterior.png",
-                    "assets/img/cancun_sala.png",
-                    "assets/img/nave.png"
+                    "assets/img/cancun_sala.png"
                 ],
+                "model3d": "assets/3d/Mundo.glb",
                 "units": [
                     {
                         "name": "PLANTA BAJA",

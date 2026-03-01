@@ -656,7 +656,27 @@
             <div class="section-container">
                 <h2 class="section-title">🏆 Desarrollos Destacados</h2>
 
-                <div class="property-filters-advanced" data-aos="fade-up" data-aos-delay="100">
+                <!-- AI Matchmaker Search Bar -->
+                <div class="ai-matchmaker" data-aos="fade-up" data-aos-delay="50">
+                    <div class="ai-matchmaker-inner glass-panel">
+                        <i class='bx bx-sparkles ai-icon'></i>
+                        <input type="text" id="aiSearchInput"
+                            placeholder="Busco una casa para familia con alberca cerca de Tulum y tengo 1.5 M..."
+                            autocomplete="off">
+                        <button id="aiVoiceBtn" class="ai-voice-btn" onclick="startVoiceRecognition()"
+                            title="Buscar con voz">
+                            <i class='bx bx-microphone'></i>
+                        </button>
+                        <button id="aiSearchBtn" onclick="searchWithAI()">
+                            <span class="btn-text">Buscar con IA</span>
+                            <i class='bx bx-loader-alt bx-spin ai-spinner hidden'></i>
+                        </button>
+                    </div>
+                    <div id="aiSearchFeedback" class="ai-feedback hidden"></div>
+                </div>
+
+                <div class="property-filters-advanced hidden" style="display: none;" data-aos="fade-up"
+                    data-aos-delay="100">
                     <div class="filter-group">
                         <label>📍 Ubicación</label>
                         <select id="filterLocation">
@@ -1181,6 +1201,25 @@
                 <div class="prop-gallery">
                     <img id="pmMainImg" src="" alt="Propiedad">
                     <div id="pmThumbnails"></div>
+
+                    <!-- 3D / AR Container -->
+                    <div id="threed-container">
+                        <model-viewer id="pmModelViewer" src="" ar ar-modes="webxr scene-viewer quick-look"
+                            camera-controls poster="assets/img/avatar.png" shadow-intensity="1" auto-rotate>
+                            <button slot="ar-button" class="ar-view-btn">
+                                <i class='bx bx-cube-alt'></i> Ver en mi espacio (AR)
+                            </button>
+                        </model-viewer>
+                    </div>
+
+                    <!-- Cinematic / Inmersive Photo Container (Fallback) -->
+                    <div id="cinematic-container" class="cinematic-container">
+                        <img id="cinematicImg" class="cinematic-img" src="" alt="Cinematic View">
+                        <div class="cinematic-overlay">
+                            <span class="cinematic-badge">🎬 Vista Inmersiva HD</span>
+                        </div>
+                    </div>
+
                     <div class="pm-map-container" id="pmMapContainer"
                         style="display: none; width: 100%; flex-grow: 1; padding: 15px; box-sizing: border-box; background: #000;">
                         <iframe id="pmMapIframe" src=""
@@ -1312,11 +1351,12 @@
 
     <!-- Hidden File Input for Admin Image Picker -->
     <input type="file" id="adminFilePicker" style="display:none;" accept="image/*">
+    <input type="file" id="adminModelPicker" style="display:none;" accept=".glb">
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <!-- Phase 11: 3D Model Viewer Web Component -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1344,8 +1384,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="config/config.js?v=4.8"></script>
-    <script src="assets/js/script.js?v=4.8"></script>
+    <script src="config/config.js?v=5.0"></script>
+    <script src="assets/js/script.js?v=5.0"></script>
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>

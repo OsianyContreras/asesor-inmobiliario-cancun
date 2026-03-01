@@ -190,7 +190,17 @@ function openPropertyModal(id) {
 
     // 1. Galería de Imágenes
     const pmMainImg = document.getElementById('pmMainImg');
+    const pmModelViewer = document.getElementById('pmModelViewer');
+    const threedContainer = document.getElementById('threed-container');
+    const cinematicContainer = document.getElementById('cinematic-container');
+    const cinematicImg = document.getElementById('cinematicImg');
     const imagesArray = data.images || [];
+
+    // Reset default view: show image, hide 3D and Cinematic
+    if (pmMainImg) pmMainImg.style.display = 'block';
+    if (threedContainer) threedContainer.classList.remove('active');
+    if (cinematicContainer) cinematicContainer.classList.remove('active');
+
     if (pmMainImg && imagesArray.length > 0) {
         pmMainImg.src = imagesArray[0];
         pmMainImg.alt = data.title || 'Propiedad';
@@ -199,6 +209,61 @@ function openPropertyModal(id) {
     const pmThumbnails = document.getElementById('pmThumbnails');
     if (pmThumbnails) {
         pmThumbnails.innerHTML = '';
+
+        // --- ALWAYS SHOW 3D Toggle button ---
+        const btn3d = document.createElement('div');
+        btn3d.className = 'thumb-wrapper';
+        btn3d.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;';
+        btn3d.innerHTML = `
+            <div style="height:65px;width:90px;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <i class='bx bx-cube-alt' style="font-size:1.8rem;color:var(--primary);animation:pulse-green 2s infinite;"></i>
+            </div>
+            <span style="font-size:0.65rem;color:var(--primary);">VISTA 3D</span>
+        `;
+        btn3d.onclick = () => {
+            if (pmMainImg) pmMainImg.style.display = 'none';
+
+            // --- DEBUG: Muestra los datos reales en pantalla para el usuario ---
+            console.log("3D Modal Debug:", { id, key, modelPath: data.model3d });
+
+            // Logic: Real 3D vs Cinematic 3D
+            const modelPath = (data.model3d && typeof data.model3d === 'string') ? data.model3d.trim() : "";
+
+            if (modelPath !== '') {
+                console.log("3D Loader: Cargando ->", modelPath);
+                if (threedContainer) {
+                    threedContainer.style.display = 'block'; // Fuerza visibilidad
+                    threedContainer.classList.add('active');
+                    if (pmModelViewer) {
+                        // Cambiamos el src directamente para disparar el observador del web component
+                        pmModelViewer.src = modelPath;
+                        // Forzar refresco si el componente ya existe
+                        if (pmModelViewer.dismissPosters) pmModelViewer.dismissPosters();
+                    }
+                }
+                if (cinematicContainer) cinematicContainer.classList.remove('active');
+                if (cinematicContainer) cinematicContainer.style.display = 'none';
+            } else {
+                console.warn("3D Loader: No hay modelo 3D. Activando Fallback.");
+                // FALLBACK: Cinematic mode with main image
+                if (cinematicContainer) {
+                    cinematicContainer.style.display = 'block';
+                    cinematicContainer.classList.add('active');
+                    if (cinematicImg) cinematicImg.src = imagesArray[0] || 'placeholder.png';
+                }
+                if (threedContainer) {
+                    threedContainer.classList.remove('active');
+                    threedContainer.style.display = 'none';
+                }
+            }
+
+            // Highlight 3D button
+            Array.from(pmThumbnails.querySelectorAll('.thumb-wrapper div')).forEach(d => d.style.borderColor = 'rgba(255,255,255,0.1)');
+            Array.from(pmThumbnails.querySelectorAll('img')).forEach(i => i.style.border = '2px solid rgba(255,255,255,0.1)');
+            btn3d.querySelector('div').style.borderColor = 'var(--primary)';
+        };
+        pmThumbnails.appendChild(btn3d);
+
         const roomLabels = (activeLang === 'en') ? ['Exterior', 'Living', 'Bedroom', 'Bath', 'Kitchen'] : ['Exterior', 'Sala', 'Recámara', 'Baño', 'Cocina'];
 
         imagesArray.forEach((imgUrl, index) => {
@@ -210,16 +275,16 @@ function openPropertyModal(id) {
             const thumbElement = document.createElement('img');
             // Usar preview local si existe, de lo contrario la URL normal
             thumbElement.src = LocalPreviews[imgUrl] || imgUrl;
-            thumbElement.style.cssText = `height:65px;width:90px;object-fit:cover;border-radius:8px;transition:all 0.25s ease;border:${index === 0 ? '2px solid var(--primary)' : '2px solid rgba(255,255,255,0.1)'};`;
+            thumbElement.style.cssText = `height:65px;width:90px;object-fit:cover;border-radius:8px;transition:all 0.25s ease;border: 2px solid rgba(255,255,255,0.1);`;
 
             const labelEl = document.createElement('span');
             labelEl.textContent = label;
-            labelEl.style.cssText = `font-size:0.65rem;color:${index === 0 ? 'var(--primary)' : 'rgba(255,255,255,0.4)'};text-transform:uppercase;`;
+            labelEl.style.cssText = `font-size:0.65rem;color:rgba(255,255,255,0.4);text-transform:uppercase;`;
 
             wrapper.appendChild(thumbElement);
             wrapper.appendChild(labelEl);
 
-            // Add delete button for image if admin
+            // --- RESTORED: Admin Image Logic ---
             if (isAdmin) {
                 const delImg = document.createElement('button');
                 delImg.innerHTML = '×';
@@ -233,16 +298,24 @@ function openPropertyModal(id) {
                 };
                 wrapper.appendChild(delImg);
 
-                // Add URL edit on double click
                 wrapper.ondblclick = () => {
                     triggerImagePicker(key, 'edit', index, id);
                 };
             }
 
             wrapper.onclick = () => {
-                if (pmMainImg) pmMainImg.src = imgUrl;
+                if (pmMainImg) {
+                    pmMainImg.style.display = 'block';
+                    pmMainImg.src = imgUrl;
+                }
+                if (threedContainer) threedContainer.classList.remove('active');
+                if (cinematicContainer) cinematicContainer.classList.remove('active');
+
+                // Clear highlights
                 Array.from(pmThumbnails.querySelectorAll('img')).forEach(i => i.style.border = '2px solid rgba(255,255,255,0.1)');
+                Array.from(pmThumbnails.querySelectorAll('.thumb-wrapper div')).forEach(d => d.style.borderColor = 'rgba(255,255,255,0.1)'); // Target the inner div for 3D button
                 Array.from(pmThumbnails.querySelectorAll('span')).forEach(s => s.style.color = 'rgba(255,255,255,0.4)');
+
                 thumbElement.style.border = '2px solid var(--primary)';
                 labelEl.style.color = 'var(--primary)';
             };
@@ -462,6 +535,28 @@ function openPropertyModal(id) {
             detailsContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
             detailsContainer.style.gap = '15px';
 
+            // --- NUEVO: Input para el URL del modelo 3D (Admin) ---
+            const modelLabel = document.createElement('div');
+            modelLabel.style.cssText = 'grid-column: span 2; margin-top:5px; font-size:0.7rem; color:var(--primary); font-weight:700; text-align:center;';
+            modelLabel.textContent = '-- URL MODELO 3D (.GLB) --';
+            detailsContainer.appendChild(modelLabel);
+
+            const modelInput = document.createElement('input');
+            modelInput.type = 'text';
+            modelInput.placeholder = 'assets/3d/modelo.glb o URL';
+            modelInput.value = data.model3d || '';
+            modelInput.style.cssText = 'grid-column: span 2; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px; border-radius: 8px; font-size: 0.8rem;';
+            modelInput.onblur = () => {
+                data.model3d = modelInput.value;
+                syncModalEdit(key, 'model3d', modelInput.value);
+            };
+            detailsContainer.appendChild(modelInput);
+
+            const uploadModelBtn = document.createElement('button');
+            uploadModelBtn.innerHTML = "<i class='bx bx-upload'></i> Subir archivo .GLB";
+            uploadModelBtn.style.cssText = 'grid-column: span 2; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-top: -10px;';
+            uploadModelBtn.onclick = () => { triggerModelPicker(key, id); };
+            detailsContainer.appendChild(uploadModelBtn);
 
             // --- NUEVO: Selector de Tipo Integrado (AHORA PRIMERO) ---
             const typeHeader = document.createElement('div');
@@ -1485,26 +1580,7 @@ function renderHomeCards(options = {}) {
     const lang = typeof currentLang !== 'undefined' ? currentLang : 'es';
     const data = (propertyDataBilingual && propertyDataBilingual[lang]) ? propertyDataBilingual[lang] : {};
 
-    // --- NUEVO: Autocompletar Filtro Ubicación con Estados ---
-    const locSelect = document.getElementById('filterLocation');
-    if (locSelect) {
-        // Collect all distinct states
-        const uniqueStates = [...new Set(Object.values(data).map(p => p.state).filter(s => s && s.trim() !== ''))];
-        // Retain the current value if possible
-        const currentVal = locSelect.value;
-        if (uniqueStates.length > 0) {
-            locSelect.innerHTML = `<option value="all">${lang === 'es' ? 'Todas las ubicaciones' : 'All locations'}</option>`;
-            uniqueStates.forEach(state => {
-                locSelect.innerHTML += `<option value="${state.toLowerCase()}">${state}</option>`;
-            });
-            // Try to set back to currentVal if it still exists
-            if (Array.from(locSelect.options).some(opt => opt.value === currentVal)) {
-                locSelect.value = currentVal;
-            } else {
-                locSelect.value = 'all';
-            }
-        }
-    }
+    // El select de ubicación lo mantenemos nativo del HTML para que empate con ciudades (Cancún, Mérida, Tulum, Playa)
 
     // 1. Filtrado de datos
     const filteredKeys = Object.keys(data).filter(key => {
@@ -1551,7 +1627,7 @@ function renderHomeCards(options = {}) {
             <h3>No encontramos coincidencias exactas</h3>
             <p>Intenta ajustar tus filtros para ver más opciones.</p>
         </div>`;
-        return;
+        return false;
     }
 
     filteredKeys.forEach(key => {
@@ -1602,6 +1678,8 @@ function renderHomeCards(options = {}) {
 
     // 4. Update Interactive Map
     setTimeout(buildInteractiveMap, 100);
+
+    return true;
 }
 
 // Init AOS Animation Library and Base Data
@@ -2289,7 +2367,7 @@ function syncModalEdit(key, field, value) {
     ['es', 'en'].forEach(lang => {
         if (propertyDataBilingual[lang] && propertyDataBilingual[lang][key]) {
             const prop = propertyDataBilingual[lang][key];
-            if (field === 'badge' || field === 'title' || field === 'amenities' || field === 'propType' || field === 'units' || field === 'state' || field === 'mapLocation' || field === 'addressText') {
+            if (field === 'badge' || field === 'title' || field === 'amenities' || field === 'propType' || field === 'units' || field === 'state' || field === 'mapLocation' || field === 'addressText' || field === 'model3d') {
                 prop[field] = value;
             } else if (prop.units && prop.units[window.currentEditUnitIndex]) {
                 // Si el valor es numérico pero viene como string (desde inputs), guardarlo como número si aplica
@@ -2311,6 +2389,32 @@ function syncModalEdit(key, field, value) {
         delivery: document.getElementById('filterDelivery') ? document.getElementById('filterDelivery').value : 'all'
     };
     renderHomeCards(options);
+}
+
+// ... existing code ...
+
+function triggerModelPicker(key, propertyId) {
+    const picker = document.getElementById('adminModelPicker');
+    if (!picker) return;
+
+    picker.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Extraer nombre del archivo (sin la ruta C:\fakepath\)
+        const fileName = file.name.split('\\').pop().split('/').pop();
+        const finalPath = `assets/3d/${fileName}`;
+
+        // Guardar la ruta del archivo relativa al proyecto
+        syncModalEdit(key, 'model3d', finalPath);
+
+        alert(`🚀 Configurado para buscar el modelo en: ${finalPath}\n\nRECUERDA: Debes copiar el archivo "${fileName}" manualmente a la carpeta "assets/3d/" de tu proyecto para que funcione.`);
+
+        openPropertyModal(propertyId);
+        picker.value = ''; // Reset
+    };
+
+    picker.click();
 }
 
 /**
@@ -2642,4 +2746,195 @@ function fetchAddress(lat, lng) {
             console.error(err);
             textEl.textContent = "Error al obtener dirección. Coordenadas: " + lat.toFixed(4) + ", " + lng.toFixed(4);
         });
+}
+
+// =========================================
+// AI MATCHMAKER & GEMINI INTEGRATION
+// =========================================
+async function searchWithAI() {
+    const input = document.getElementById("aiSearchInput");
+    const btn = document.getElementById("aiSearchBtn");
+    const fb = document.getElementById("aiSearchFeedback");
+    const spinner = btn.querySelector(".ai-spinner");
+    const textSpan = btn.querySelector(".btn-text");
+
+    const query = input.value.trim();
+    if (!query) return;
+
+    // UI Loading state
+    btn.disabled = true;
+    spinner.classList.remove("hidden");
+    textSpan.textContent = "Analizando...";
+    fb.classList.add("hidden");
+    fb.className = "ai-feedback hidden";
+
+    // API Key setup
+    const apiKey = (window.AppConfig && window.AppConfig.geminiApiKey) ? window.AppConfig.geminiApiKey : "DEMO_MODE";
+
+    try {
+        let aiResult = {};
+
+        if (apiKey === "DEMO_MODE") {
+            // Simulated fallback logic with Timeout
+            await new Promise(r => setTimeout(r, 1500));
+
+            const lowerQ = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Lógica de simulación para detectar ciudades desconocidas (ej. "Cuba")
+            let detectedLocation = "all";
+            const validCities = ["cancun", "merida", "tulum", "playa"];
+            const foundCity = validCities.find(c => lowerQ.includes(c));
+
+            if (foundCity) {
+                detectedLocation = foundCity;
+            } else if (lowerQ.includes(" en ") || lowerQ.includes("cuba") || lowerQ.includes("madrid") || lowerQ.includes("miami")) {
+                // Si menciona "en [algo]" pero no es nuestras ciudades, simulamos que pide una ubicación que no tenemos
+                detectedLocation = "unknown";
+            }
+
+            aiResult = {
+                location: detectedLocation,
+                beds: lowerQ.includes("3") ? "3" : lowerQ.includes("2") ? "2" : lowerQ.includes("4") ? "4" : "0",
+                price: (lowerQ.includes("millon") || lowerQ.includes("presupuesto alto")) ? "mid" : "all",
+                delivery: lowerQ.includes("preventa") ? "Preventa" : "all"
+            };
+        } else {
+            // Real Gemini 2.5 API Call (Flash Preview)
+            const prompt = `Actúa como un agente inmobiliario que solo devuelve JSON. Lee esta frase: "${query}". 
+            Devuelve un JSON exacto con estas llaves obligatorias:
+            "location" (cancun, merida, tulum, playa, o si pide una ciudad que no es de estas pon "unknown", o si no pide ninguna pon "all"),
+            "beds" ("0", "1", "2", "3", "4"),
+            "price" ("all", "low", "mid", "high"),
+            "delivery" ("all", "Preventa", "Entrega Inmediata"). Solo output crudo sin markers de markdown ni texto extra.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const response = await fetchWithExponentialBackoff(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            const data = await response.json();
+            let textResponse = data.candidates[0].content.parts[0].text;
+            textResponse = textResponse.replace(/```json/gi, '').replace(/```/g, '').trim();
+            aiResult = JSON.parse(textResponse);
+        }
+
+        // Usamos los datos crudos de la IA para buscar, SIN pasar por el DOM (porque el DOM destruye strings invalidos como "unknown")
+        const searchOptions = {
+            location: aiResult.location || 'all',
+            beds: aiResult.beds || '0',
+            price: aiResult.price || 'all',
+            delivery: aiResult.delivery || 'all'
+        };
+
+        // Lanzar UI Physics renderizando las cartas
+        const hasMatches = renderHomeCards(searchOptions);
+
+        const loc = document.getElementById('filterLocation');
+        const b = document.getElementById('filterBeds');
+        const p = document.getElementById('filterPrice');
+        const d = document.getElementById('filterDelivery');
+
+        if (!hasMatches) {
+            // Matriz Caso B: Falso positivo o sin match
+            fb.innerHTML = `🌟 <strong>Búsqueda expandida:</strong> No encontramos desarrollos exactos ahí, pero mira estas increíbles opciones equivalentes.`;
+            fb.className = "ai-feedback no-match"; // Limpiar hidden y error, aplicar no-match
+
+            // Restablecer valores default para que vean el catálogo central y no la pantalla vacía
+            if (loc) loc.value = 'all';
+            if (b) b.value = '0';
+            if (p) p.value = 'all';
+            if (d) d.value = 'all';
+            renderHomeCards({ location: 'all', beds: '0', price: 'all', delivery: 'all' });
+
+        } else {
+            // Success - Sincronizar el DOM (Selects ocultos) con el match exitoso
+            if (loc && aiResult.location !== "unknown") loc.value = aiResult.location || 'all';
+            if (b) b.value = aiResult.beds || '0';
+            if (p) p.value = aiResult.price || 'all';
+            if (d) d.value = aiResult.delivery || 'all';
+
+            fb.innerHTML = `✨ <strong>Match Encontrado:</strong> Ajustamos el catálogo según la IA inmobiliaria.`;
+            fb.className = "ai-feedback"; // Base classes, no hidden
+        }
+
+        const propsDiv = document.getElementById("propiedades");
+        if (propsDiv) { propsDiv.scrollIntoView({ behavior: "smooth", block: "start" }); }
+
+    } catch (error) {
+        console.error("Gemini AI Error:", error);
+        // Matriz Caso A (Timeout o cuota) - Empty State Inteligente
+        fb.innerHTML = `Nuestra Inteligencia Artificial está tomando un respiro... <button class="btn-reintentar" onclick="searchWithAI()">Reintentar Conexión <i class='bx bx-refresh'></i></button>`;
+        fb.classList.remove("hidden");
+        fb.classList.add("error");
+    } finally {
+        btn.disabled = false;
+        spinner.classList.add("hidden");
+        textSpan.textContent = "Buscar con IA";
+    }
+}
+
+// =========================================
+// OPTION 1: VOICE SEARCH (SPEECH-TO-TEXT)
+// =========================================
+function startVoiceRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("Lo siento, tu navegador no soporta búsqueda por voz.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    const btn = document.getElementById('aiVoiceBtn');
+    const input = document.getElementById('aiSearchInput');
+
+    recognition.lang = currentLang === 'en' ? 'en-US' : 'es-MX';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+        btn.classList.add('listening');
+        input.placeholder = currentLang === 'en' ? "Listening..." : "Escuchando...";
+    };
+
+    recognition.onend = () => {
+        btn.classList.remove('listening');
+        input.placeholder = currentLang === 'en' ? "Search for a home..." : "Busco una casa...";
+    };
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        searchWithAI();
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Speech Recognition Error:", event.error);
+        btn.classList.remove('listening');
+    };
+
+    recognition.start();
+}
+
+// Arquitectura: Implementar Backoff Exponencial (1s, 2s, 4s, 8s, 16s)
+async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
+    let retries = 0;
+    while (retries < maxRetries) {
+        try {
+            const res = await fetch(url, options);
+            if (!res.ok) {
+                if (res.status === 429 || res.status >= 500) {
+                    throw new Error("Rate limit or Server error from Gemini");
+                }
+            }
+            return res;
+        } catch (error) {
+            retries++;
+            if (retries >= maxRetries) throw error;
+            const waitTime = Math.pow(2, retries - 1) * 1000; // Multiplicador exponencial puro
+            console.warn(`⏳ API inestable. Activando Backoff Exponencial en ${waitTime}ms... (Intento ${retries}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+    }
 }
