@@ -1121,7 +1121,18 @@ function submitLead(e) {
     const whatsappNumber = "529983008729";
 
     // Crear el mensaje pre-llenado
-    const message = `¡Hola Tu Amigo Experto! 👋\n\nSoy *${name}* y me gustaría agendar una asesoría gratuita.\n\n📱 Mi número de contacto es: ${phone}\n🎯 Me interesa: *${interestText}*.\n📅 Día agendado: *${formattedDate}*\n⏰ Hora: *${time}*\n\n¡Espero tu confirmación!`;
+    let message = `¡Hola Tu Amigo Experto! 👋\n\nSoy *${name}* y me gustaría agendar una asesoría gratuita.\n\n📱 Mi número de contacto es: ${phone}\n🎯 Me interesa: *${interestText}*.\n📅 Día agendado: *${formattedDate}*\n⏰ Hora: *${time}*`;
+
+    // --- NEW: Inyección de datos del Simulador si existen ---
+    if (window.simulatorData && window.simulatorData.poderTotal > 0) {
+        const i = formatCurrency(window.simulatorData.ingreso);
+        const a = formatCurrency(window.simulatorData.ahorro);
+        const p = formatCurrency(window.simulatorData.poderTotal);
+        message += `\n\n📊 *Mis Datos del Simulador:*\n- Sueldo Libre: ${i}\n- Saldo SSV: ${a}\n- *Poder de Compra Real: ${p}*`;
+    }
+
+    message += `\n\n¡Espero tu confirmación!`;
+
     const encodedMessage = encodeURIComponent(message);
 
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
@@ -1143,41 +1154,7 @@ function submitLead(e) {
 // PHASE 3 LOGIC
 // =========================================
 
-// 1. Points Simulator
-function calculatePoints() {
-    const ageInput = document.getElementById('sim-age').value;
-    const salaryInput = document.getElementById('sim-salary').value;
-    const resultDiv = document.getElementById('sim-result');
 
-    const age = parseInt(ageInput);
-    const salary = parseFloat(salaryInput);
-
-    if (!age || !salary || age < 18 || salary < 5000) {
-        alert("Por favor ingresa datos válidos (mayor de 18 años y sueldo mayor a $5,000).");
-        return;
-    }
-
-    // Rough estimation formula (just for engagement purposes)
-    let potential = salary * 35;
-
-    // Penalize if older than 40
-    if (age > 40) {
-        potential = potential * (1 - ((age - 40) * 0.02));
-    }
-
-    // Format to MXN
-    const formattedAmount = potential.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
-
-    resultDiv.innerHTML = `
-        <h3>¡Tu perfil tiene potencial! 🚀</h3>
-        <p>Basado en tus datos, Infonavit te podría prestar hasta:</p>
-        <span class="amount">${formattedAmount}</span>
-        <p>¿Quieres verificar tus 1,080 puntos reales y ver cuánto dinero tienes ahorrado en tu Subcuenta?</p>
-        <button class="submit-btn" style="margin-top:10px" onclick="openLeadModal()">Verificar mis puntos gratis</button>
-    `;
-
-    resultDiv.classList.remove('hidden');
-}
 
 // 2. FAQ Accordion Logic
 document.querySelectorAll('.faq-question').forEach(button => {
@@ -1902,6 +1879,7 @@ function calcPlusvalia() {
 
     // Generar datos por año
     var data = [];
+    var minVal = precio;
     var maxVal = 0;
     for (var i = 1; i <= years; i++) {
         var val = precio * Math.pow(1 + tasa, i);
@@ -1909,9 +1887,10 @@ function calcPlusvalia() {
         if (val > maxVal) maxVal = val;
     }
 
-    // Generar barras
+    // Generar barras con un escalado que resalte el crecimiento
     chart.innerHTML = data.map(function (d) {
-        var pct = (d.val / maxVal) * 100;
+        // Mapear de minVal a maxVal para que visualmente vaya del 20% al 85% del contenedor
+        var pct = maxVal > minVal ? 20 + ((d.val - minVal) / (maxVal - minVal)) * 65 : 20;
         var fmt = d.val >= 1000000 ? (d.val / 1000000).toFixed(2) + 'M' : (d.val / 1000).toFixed(0) + 'K';
         return '<div class="pv-bar-wrap"><div class="pv-bar" style="height:' + pct + '%;"></div><div class="pv-bar-label">' + d.year + '<br>$' + fmt + '</div></div>';
     }).join('');
@@ -2097,38 +2076,100 @@ function updateSimulator() {
 
     if (!ingresoEl || !edadEl || !ahorroEl) return;
 
-    const ingreso = parseInt(ingresoEl.value) || 25000;
-    const edad = parseInt(edadEl.value) || 30;
-    const ahorro = parseInt(ahorroEl.value) || 50000;
+    const ingreso = parseInt(ingresoEl.value) || 0;
+    const edad = parseInt(edadEl.value) || 0;
+    const ahorro = parseInt(ahorroEl.value) || 0; // SSV / Enganche
 
     // Update slider visual labels
     document.getElementById('ingreso-val').textContent = formatCurrency(ingreso);
     document.getElementById('edad-val').textContent = edad + ' años';
     document.getElementById('ahorro-val').textContent = formatCurrency(ahorro);
 
-    // Mortgage math
-    let plazoYears = Math.min(20, 65 - edad);
-    if (plazoYears < 5) plazoYears = 5;
+    let creditoMaximo = 0;
+    let pagoMensualReal = 0;
+    let PMT_maximo = 0;
+    let gastosTititulo = 0;
 
-    const PMT = ingreso * 0.30; // Max monthly payment = 30% of income
-    const r = 0.1045 / 12; // 10.45% average annual rate
-    const n = plazoYears * 12;
+    // Solo calcular si hay edad viable y ganancias
+    if (edad >= 18 && ingreso > 0) {
+        // 1. Plazo Máximo Infonavit: 30 años, pero Edad + Plazo no debe exceder 70 años
+        let plazoYears = Math.min(30, 70 - edad);
+        if (plazoYears < 5) plazoYears = 5;
 
-    // Present Value formula
-    const creditoMaximo = PMT * ((1 - Math.pow(1 + r, -n)) / r);
-    const poderTotal = creditoMaximo + ahorro;
+        // 2. Tasa de Interés Infonavit (Escalonada según salario)
+        let tasaAnual = 0.1045;
+        if (ingreso <= 10000) tasaAnual = 0.055;
+        else if (ingreso <= 15000) tasaAnual = 0.082;
+        else tasaAnual = 0.1045;
+
+        // 3. Capacidad de Pago
+        let factorMensualidad = ingreso <= 10000 ? 0.20 : 0.30;
+        PMT_maximo = ingreso * factorMensualidad;
+
+        const r = tasaAnual / 12;
+        const n = plazoYears * 12;
+
+        // 4. Monto de Crédito Máximo Teórico
+        creditoMaximo = PMT_maximo * ((1 - Math.pow(1 + r, -n)) / r);
+
+        // Tope máximo oficial de Infonavit aprox $2,716,334 MXN (2024/2026)
+        if (creditoMaximo > 2716334) {
+            creditoMaximo = 2716334;
+        }
+
+        // 5. Calcular Mensualidad REAL (Pago Fijo) sobre el préstamo final
+        pagoMensualReal = creditoMaximo * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+        // 6. Gastos de Titulación (Aprox 5%)
+        gastosTititulo = creditoMaximo * 0.05;
+    }
+
+    // 7. Poder de Compra Real = Crédito + Ahorro - Gastos
+    let poderTotal = (creditoMaximo + ahorro) - gastosTititulo;
+    if (poderTotal < 0) poderTotal = 0;
+
+    // --- NEW: Guardar Globalmente para inyectar en WhatsApp ---
+    window.simulatorData = {
+        ingreso: ingreso,
+        ahorro: ahorro,
+        poderTotal: poderTotal
+    };
+
+    // --- NEW: Urgency Banner ---
+    const urgency = document.getElementById('sim-urgency');
+    if (urgency) {
+        if (poderTotal >= 1000000) {
+            urgency.innerHTML = "🔥 <strong>¡Felicidades!</strong> Tienes un presupuesto mayor al 80% de los mexicanos. Tenemos exclusivas propiedades esperándote.";
+            urgency.style.visibility = 'visible';
+            urgency.style.opacity = '1';
+        } else {
+            urgency.style.visibility = 'hidden';
+            urgency.style.opacity = '0';
+        }
+    }
+
+    // --- NEW: Confetti Effect ---
+    if (poderTotal >= 1500000) {
+        if (!window.confettiFired && typeof confetti === 'function') {
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            window.confettiFired = true;
+        }
+    } else {
+        window.confettiFired = false;
+    }
 
     // Update Result Panel
     document.getElementById('res-poder').textContent = formatCurrency(poderTotal);
     document.getElementById('res-credito').textContent = formatCurrency(creditoMaximo);
     document.getElementById('res-ahorro').textContent = formatCurrency(ahorro);
-    document.getElementById('res-mensualidad').textContent = formatCurrency(PMT);
+    document.getElementById('res-mensualidad').textContent = formatCurrency(pagoMensualReal);
 
     // Update interactive Pie Chart
     const chart = document.getElementById('sim-chart');
-    if (chart && poderTotal > 0) {
-        const creditPerc = Math.round((creditoMaximo / poderTotal) * 100);
-        chart.style.background = `conic-gradient(var(--primary) 0% ${creditPerc}%, #10b981 ${creditPerc}% 100%)`;
+    if (chart && (creditoMaximo > 0 || ahorro > 0)) {
+        const total = creditoMaximo + ahorro;
+        const creditPerc = Math.round((creditoMaximo / total) * 100);
+        chart.style.background = `conic-gradient(var(--primary) 0% ${creditPerc}%, #3b82f6 ${creditPerc}% 100%)`;
     }
 }
 

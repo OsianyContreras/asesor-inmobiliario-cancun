@@ -709,33 +709,6 @@
             </div>
         </section>
 
-        <!-- 3. Points Simulator (Engagement & Lead Capture) -->
-        <section class="simulator-section" data-aos="zoom-in" data-aos-duration="800">
-            <div class="glass-panel simulator-container">
-                <div class="simulator-header">
-                    <i class='bx bx-calculator'></i>
-                    <h2>Simulador Rápido de Crédito</h2>
-                    <p>Calcula tu potencial de compra en menos de 1 minuto sin compromisos.</p>
-                </div>
-                <div class="simulator-body" data-aos="fade-up" data-aos-delay="200">
-                    <div class="form-group">
-                        <label>Tu Edad</label>
-                        <input type="number" id="sim-age" min="18" max="70" placeholder="Ej: 30"
-                            style="pointer-events: auto;">
-                    </div>
-                    <div class="form-group">
-                        <label>Sueldo Mensual Cotizado</label>
-                        <input type="number" id="sim-salary" placeholder="Ej: 15000" style="pointer-events: auto;">
-                    </div>
-                    <button class="submit-btn" onclick="calculatePoints()">Calcular Mi Potencial</button>
-
-                    <div id="sim-result" class="sim-result hidden">
-                        <!-- Injected by JS -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- ===== NUEVA: SIMULADOR DE CRÉDITO GAMIFICADO ===== -->
         <section class="simulator-section" data-aos="fade-up" data-aos-duration="800" id="simulador">
             <div class="section-container">
@@ -748,29 +721,43 @@
                         <div class="slider-group">
                             <div class="slider-header">
                                 <label>Tu Ingreso Mensual Libre</label>
-                                <span id="ingreso-val" class="slider-value">$25,000</span>
+                                <span id="ingreso-val" class="slider-value">$0</span>
                             </div>
-                            <input type="range" id="sim-ingreso" min="10000" max="150000" step="1000" value="25000"
+                            <input type="range" id="sim-ingreso" min="0" max="150000" step="1000" value="0"
                                 class="styled-slider" oninput="updateSimulator()">
                         </div>
 
                         <div class="slider-group">
                             <div class="slider-header">
                                 <label>Tu Edad Actual</label>
-                                <span id="edad-val" class="slider-value">30 años</span>
+                                <span id="edad-val" class="slider-value">0 años</span>
                             </div>
-                            <input type="range" id="sim-edad" min="18" max="65" step="1" value="30"
-                                class="styled-slider" oninput="updateSimulator()">
+                            <input type="range" id="sim-edad" min="0" max="70" step="1" value="0" class="styled-slider"
+                                oninput="updateSimulator()">
                         </div>
 
                         <div class="slider-group">
                             <div class="slider-header">
-                                <label>Ahorro Previo (Enganche/SSV)</label>
-                                <span id="ahorro-val" class="slider-value">$50,000</span>
+                                <label>Saldo Subcuenta de Vivienda (SSV)</label>
+                                <span id="ahorro-val" class="slider-value">$0</span>
                             </div>
-                            <input type="range" id="sim-ahorro" min="0" max="1000000" step="10000" value="50000"
+                            <input type="range" id="sim-ahorro" min="0" max="1000000" step="10000" value="0"
                                 class="styled-slider" oninput="updateSimulator()">
                         </div>
+
+                        <!-- Urgency Banner (Dynamic) -->
+                        <div id="sim-urgency" class="urgency-banner"
+                            style="margin-top: 20px; border-radius: 8px; font-size: 0.9rem; padding: 10px; animation: pulse 2s infinite; background: linear-gradient(to right, #ea580c, #c2410c); color: white; visibility: hidden; opacity: 0; transition: all 0.3s ease; min-height: 40px; display: flex; align-items: center; justify-content: center;">
+                        </div>
+
+                        <button class="submit-btn" onclick="openLeadModal()"
+                            style="margin-top:1.5rem; width:100%; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 1.1rem;">
+                            <i class='bx bx-check-shield'></i> ¡Validar mi Precalificación Oficial!
+                        </button>
+                        <p
+                            style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; display: flex; justify-content: center; align-items: center; gap: 5px;">
+                            <i class='bx bx-lock-alt'></i> Consulta gratuita. No afecta tu Buró de Crédito.
+                        </p>
                     </div>
 
                     <!-- Resultados Visuales -->
@@ -789,7 +776,7 @@
                                 <strong id="res-credito">$900,000</strong>
                             </div>
                             <div class="breakdown-item glass-panel">
-                                <span><i class='bx bx-wallet'></i> Tu Ahorro</span>
+                                <span><i class='bx bx-wallet'></i> Saldo SSV</span>
                                 <strong id="res-ahorro">$50,000</strong>
                             </div>
                             <div class="breakdown-item glass-panel highlight">
@@ -797,10 +784,6 @@
                                 <strong id="res-mensualidad">$7,500</strong>
                             </div>
                         </div>
-
-                        <button class="submit-btn" onclick="openLeadModal()" style="margin-top:1.5rem; width:100%;">
-                            ¡Quiero usar este presupuesto!
-                        </button>
                     </div>
                 </div>
             </div>
@@ -1363,6 +1346,8 @@
     <!-- Scripts -->
     <script src="config/config.js?v=4.8"></script>
     <script src="assets/js/script.js?v=4.8"></script>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         AOS.init({ once: true, offset: 50 });
     </script>
