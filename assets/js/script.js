@@ -2963,3 +2963,6 @@ async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
         }
     }
 }
+
+console.log('?? CHAPARRA V9.9 Loaded - AI Search & 3D Direct Active');
+window.APP_VERSION = '9.9';

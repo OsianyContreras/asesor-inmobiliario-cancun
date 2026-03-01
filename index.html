@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Tu Amigo Experto - Asesoría Inmobiliaria en Cancún y México</title>
+    <title>Tu Amigo Experto - V9.9</title>
 
     <!-- PWA / App Integrations -->
     <link rel="manifest" href="manifest.json">
@@ -36,10 +36,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css?v=4.8">
-
-    <!-- Model Viewer for 3D Objects -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css?v=9.9">
 
     <!-- Phase 9: Microsoft Clarity Heatmap Tracking -->
     <script type="text/javascript">
@@ -245,17 +242,7 @@
             border: 1px solid rgba(99, 102, 241, 0.5);
         }
 
-        .property-filters-advanced {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            align-items: end;
-        }
+
 
         .filter-group {
             display: flex;
@@ -417,138 +404,7 @@
     </style>
 
 
-    <!-- MODAL FUNCTIONS: Inline script - NO EXTERNAL DEPENDENCIES -->
-    <script>
-        // Property data with full image galleries (5 photos each)
-        var CARDS = {
-            1: {
-                title: 'Depas Canc\u00fan Centro', badge: 'Preventa', price: 'Desde $11,500/mes o puntos',
-                beds: '2', baths: '2', amenity: 'Rooftop + Gym',
-                desc: 'Exclusivos departamentos en el coraz\u00f3n de Canc\u00fan. Seguridad 24/7 y acabados de lujo.',
-                img: 'assets/img/img_cancun.png',
-                images: [
-                    'assets/img/img_cancun.png',
-                    'https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800'
-                ]
-            },
-            2: {
-                title: 'Casas Norte M\u00e9rida', badge: 'Entrega Inmediata', price: 'Desde $8,900/mes',
-                beds: '3', baths: '2.5', amenity: 'Parques y Seguridad',
-                desc: 'Ubicadas en la zona de mayor plusval\u00eda de M\u00e9xico. Amplios espacios y jardines frontales.',
-                img: 'assets/img/img_merida.png',
-                images: [
-                    'assets/img/img_merida.png',
-                    'https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&q=80&w=800'
-                ]
-            },
-            3: {
-                title: 'Villas Tulum', badge: 'Alta Plusval\u00eda', price: 'Excelente ROI GARANTIZADO',
-                beds: '4', baths: '4', amenity: 'Alberca Privada, Selva',
-                desc: 'Propiedades de ultra-lujo en la selva de Tulum. Administraci\u00f3n hotelera incluida.',
-                img: 'assets/img/img_tulum.png',
-                images: [
-                    'assets/img/img_tulum.png',
-                    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1540541338537-1220205ac293?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?auto=format&fit=crop&q=80&w=800'
-                ]
-            },
-            4: {
-                title: 'Residencial Aqua', badge: 'Infonavit Total', price: 'Desde $9,500/mes o puntos',
-                beds: '2', baths: '1', amenity: 'Alberca Com\u00fan',
-                desc: 'A 15 minutos en auto de la playa. Enorme alberca central y palapas.',
-                img: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800',
-                images: [
-                    'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800',
-                    'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1575517111839-3a3843ee7f5d?auto=format&fit=crop&q=80&w=800'
-                ]
-            },
-            5: {
-                title: 'Oceana Depas', badge: 'Riviera Maya', price: 'Desde $12,000/mes',
-                beds: '1', baths: '1', amenity: 'Frente al Mar',
-                desc: 'El sue\u00f1o caribe\u00f1o. Estudios y depas a pasos de la arena. Altos rendimientos en renta vacacional.',
-                img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800',
-                images: [
-                    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800',
-                    'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=800',
-                    'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800'
-                ]
-            }
-        };
 
-        function showCard(n) {
-            var d = CARDS[n];
-            if (!d) return;
-            showPropertyModal(d);
-        }
-
-        function showPropertyModal(d) {
-            var modal = document.getElementById('propertyModal');
-            if (!modal) return;
-
-            // Set main image
-            var imgEl = document.getElementById('pmMainImg');
-            var imgs = d.images || [d.img];
-            if (imgEl) { imgEl.src = imgs[0]; imgEl.alt = d.title; imgEl.style.opacity = '1'; }
-
-            // Populate thumbnails
-            var tb = document.getElementById('pmThumbnails');
-            if (tb) {
-                tb.innerHTML = '';
-                var labels = ['Exterior', 'Sala', 'Rec\u00e1mara', 'Ba\u00f1o', 'Cocina'];
-                imgs.forEach(function (url, i) {
-                    var wrap = document.createElement('div');
-                    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;';
-                    var img = document.createElement('img');
-                    img.src = url;
-                    img.style.cssText = 'height:65px;width:90px;object-fit:cover;border-radius:8px;transition:all 0.25s;border:' + (i === 0 ? '2px solid #6366f1;box-shadow:0 0 10px rgba(99,102,241,0.4)' : '2px solid rgba(255,255,255,0.1)') + ';';
-                    var lbl = document.createElement('span');
-                    lbl.textContent = labels[i] || ('Foto ' + (i + 1));
-                    lbl.style.cssText = 'font-size:0.65rem;text-transform:uppercase;letter-spacing:0.5px;color:' + (i === 0 ? '#6366f1' : 'rgba(255,255,255,0.4)') + ';transition:color 0.25s;';
-                    wrap.appendChild(img); wrap.appendChild(lbl);
-                    wrap.onclick = function () {
-                        if (imgEl) { imgEl.style.opacity = '0'; setTimeout(function () { imgEl.src = url; imgEl.style.opacity = '1'; }, 180); }
-                        Array.from(tb.children).forEach(function (w) {
-                            var wi = w.querySelector('img'), ws = w.querySelector('span');
-                            if (wi) { wi.style.border = '2px solid rgba(255,255,255,0.1)'; wi.style.boxShadow = 'none'; }
-                            if (ws) ws.style.color = 'rgba(255,255,255,0.4)';
-                        });
-                        img.style.border = '2px solid #6366f1'; img.style.boxShadow = '0 0 10px rgba(99,102,241,0.4)';
-                        lbl.style.color = '#6366f1';
-                    };
-                    tb.appendChild(wrap);
-                });
-            }
-
-            // Text fields
-            var map = { pmBadge: d.badge, pmTitle: d.title, pmPrice: d.price, pmBeds: d.beds, pmBaths: d.baths, pmAmenity: d.amenity, pmDesc: d.desc };
-            for (var k in map) { var el = document.getElementById(k); if (el) el.textContent = map[k] || ''; }
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            modal.onclick = function (e) { if (e.target === modal) closePropertyModal(); };
-        }
-
-        function closePropertyModal() {
-            var modal = document.getElementById('propertyModal');
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-    </script>
 </head>
 
 
@@ -660,7 +516,7 @@
                 <div class="ai-matchmaker">
                     <div class="ai-matchmaker-inner glass-panel">
                         <i class='bx bx-sparkles ai-icon'></i>
-                        <input type="text" id="aiSearchInput" placeholder="Describe tu hogar ideal o presupuesto..."
+                        <input type="text" id="aiSearchInput" placeholder="Tu hogar ideal o presupuesto..."
                             autocomplete="off">
                         <button id="aiVoiceBtn" class="ai-voice-btn" onclick="startVoiceRecognition()"
                             title="Buscar con voz">
@@ -674,46 +530,48 @@
                     <div id="aiSearchFeedback" class="ai-feedback hidden"></div>
                 </div>
 
-                <div class="property-filters-advanced hidden" style="display: none;" data-aos="fade-up"
-                    data-aos-delay="100">
-                    <div class="filter-group">
-                        <label>📍 Ubicación</label>
-                        <select id="filterLocation">
-                            <option value="all">Todas las ciudades</option>
-                            <option value="cancun">Cancún</option>
-                            <option value="merida">Mérida</option>
-                            <option value="tulum">Tulum</option>
-                            <option value="playa">Playa del Carmen</option>
-                        </select>
+                <!-- Manual Filters (Hidden by Default) -->
+                <template id="manualFiltersTemplate">
+                    <div class="property-filters-advanced">
+                        <div class="filter-group">
+                            <label>📍 Ubicación</label>
+                            <select id="filterLocation">
+                                <option value="all">Todas las ciudades</option>
+                                <option value="cancun">Cancún</option>
+                                <option value="merida">Mérida</option>
+                                <option value="tulum">Tulum</option>
+                                <option value="playa">Playa del Carmen</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>🏠 Recámaras</label>
+                            <select id="filterBeds">
+                                <option value="0">Cualquier número</option>
+                                <option value="1">1+ Recámara</option>
+                                <option value="2">2+ Recámaras</option>
+                                <option value="3">3+ Recámaras</option>
+                                <option value="4">4+ Recámaras</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>💰 Presupuesto</label>
+                            <select id="filterPrice">
+                                <option value="all">Cualquiera</option>
+                                <option value="low">Bajo $1M</option>
+                                <option value="mid">$1M - $2M</option>
+                                <option value="high">Lujo +$2M</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>� Entrega</label>
+                            <select id="filterDelivery">
+                                <option value="all">Cualquier fecha</option>
+                                <option value="Preventa">Preventa</option>
+                                <option value="Entrega Inmediata">Entrega Inmediata</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <label>🏠 Recámaras</label>
-                        <select id="filterBeds">
-                            <option value="0">Cualquier número</option>
-                            <option value="1">1+ Recámara</option>
-                            <option value="2">2+ Recámaras</option>
-                            <option value="3">3+ Recámaras</option>
-                            <option value="4">4+ Recámaras</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>💰 Presupuesto</label>
-                        <select id="filterPrice">
-                            <option value="all">Cualquiera</option>
-                            <option value="low">Bajo $1M</option>
-                            <option value="mid">$1M - $2M</option>
-                            <option value="high">Más de $2M</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>🔑 Entrega</label>
-                        <select id="filterDelivery">
-                            <option value="all">Ver todas</option>
-                            <option value="Preventa">Preventa</option>
-                            <option value="Entrega Inmediata">Entrega Inmediata</option>
-                        </select>
-                    </div>
-                </div>
+                </template>
 
                 <div class="property-carousel">
                     <div class="property-cards centered-cards" id="propertyGrid">
@@ -1386,8 +1244,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="config/config.js?v=5.0"></script>
-    <script src="assets/js/script.js?v=5.0"></script>
+    <script src="config/config.js?v=9.9"></script>
+    <script src="assets/js/script.js?v=9.9"></script>
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
