@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Tu Amigo Experto - CMS Edition</title>
+    <title>Asesor Inmobiliario en Cancún | Compra y Venta de Propiedades</title>
 
 
     <!-- PWA / App Integrations -->
@@ -19,7 +19,9 @@
     <meta name="apple-mobile-web-app-title" content="Amigo Experto">
 
     <meta name="description"
-        content="Guía experta en Infonavit y venta de terceros. Te ayudamos a comprar o vender tu propiedad en Cancún y todo México de manera sencilla y segura.">
+        content="Encuentra las mejores casas y departamentos en Cancún. Asesoría experta en crédito Infonavit y venta de propiedades de terceros. ¡Tu hogar ideal sin complicaciones!">
+    <meta name="keywords"
+        content="Inmobiliaria Cancún, comprar casa Cancún, asesor inmobiliario Quintana Roo, Infonavit Cancún, venta de casas Cancún">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -489,19 +491,19 @@
     <!-- Logic moved to app-master.js -->
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // El botón + llama directamente a la función maestra
-        var btnNuevo = document.getElementById('btnNuevoFracc');
-        if (btnNuevo) {
-            btnNuevo.onclick = function() {
-                if(typeof window.addNewPropertyComplex === 'function') {
-                    window.addNewPropertyComplex();
-                } else {
-                    console.error('addNewPropertyComplex not found');
-                }
-            };
-        }
-    });
+        document.addEventListener('DOMContentLoaded', function () {
+            // El botón + llama directamente a la función maestra
+            var btnNuevo = document.getElementById('btnNuevoFracc');
+            if (btnNuevo) {
+                btnNuevo.onclick = function () {
+                    if (typeof window.addNewPropertyComplex === 'function') {
+                        window.addNewPropertyComplex();
+                    } else {
+                        console.error('addNewPropertyComplex not found');
+                    }
+                };
+            }
+        });
     </script>
 
     <div class="urgency-banner">
@@ -512,7 +514,8 @@
     <canvas id="bgCanvas" class="background-effects"></canvas>
 
     <nav class="navbar">
-        <div class="logo" data-onclick-fix="true" ondblclick="var m=document.getElementById('adminModal');if(m){m.classList.add('active');var k=document.getElementById('adminKey');if(k){k.value='';k.focus()}}">
+        <div class="logo" data-onclick-fix="true"
+            ondblclick="var m=document.getElementById('adminModal');if(m){m.classList.add('active');var k=document.getElementById('adminKey');if(k){k.value='';k.focus()}}">
             <i class='bx bxs-home-heart'></i>
             <span>Tu Amigo Experto</span>
         </div>
@@ -531,7 +534,8 @@
             <button class="theme-toggle" id="themeToggle" title="Cambiar Tema">
                 <i class='bx bx-sun'></i>
             </button>
-            <button class="nav-cta" onclick="openLeadModal()" data-i18n="nav_cta"><i class='bx bx-message-dots'></i> Hablar con un Experto</button>
+            <button class="nav-cta" onclick="openLeadModal()" data-i18n="nav_cta"><i class='bx bx-message-dots'></i>
+                Hablar con un Experto</button>
         </div>
     </nav>
 
@@ -544,11 +548,14 @@
                 style="position:absolute;inset:0;background:linear-gradient(135deg,#06091a 0%,#0f1a2e 40%,#1a0e3a 70%,#06091a 100%);z-index:0;pointer-events:none;">
             </div>
 
-<div class="section-container hero-grid">
+            <div class="section-container hero-grid">
                 <div class="hero-info" data-aos="fade-right" data-aos-duration="1000">
                     <span class="badge" data-i18n="hero_badge">🌴 Especialistas en Cancún y Todo México</span>
-                    <h1 id="heroTitle" data-i18n="hero_title">Tu hogar ideal, <br><span class="highlight">sin estrés ni complicaciones</span></h1>
-                    <p class="subtitle" data-i18n="hero_subtitle">Descubre cómo aprovechar tus puntos Infonavit o expeditar tu venta. Transformamos trámites complejos en una experiencia increíble, estés donde estés.</p>
+                    <h1 id="heroTitle" data-i18n="hero_title">Tu hogar ideal, <br><span class="highlight">sin estrés ni
+                            complicaciones</span></h1>
+                    <p class="subtitle" data-i18n="hero_subtitle">Descubre cómo aprovechar tus puntos Infonavit o
+                        expeditar tu venta. Transformamos trámites complejos en una experiencia increíble, estés donde
+                        estés.</p>
                     <div class="credit-banner">
                         <img src="assets/img/creditos-banner.png" alt="Créditos">
                     </div>
@@ -568,67 +575,75 @@
                         </div>
                         <div class="chat-messages" id="chatMessages">
                             <div class="message bot">
-                                <p>¡Hola! 👋 Soy <strong>Tu Amigo Experto</strong>, tu asesor inmobiliario de confianza.</p>
-                                <p>Estoy aquí para hacer que los trámites sean sencillos. ¿Qué sueño queremos cumplir hoy?</p>
+                                <p>¡Hola! 👋 Soy <strong>Tu Amigo Experto</strong>, tu asesor inmobiliario de confianza.
+                                </p>
+                                <p>Estoy aquí para hacer que los trámites sean sencillos. ¿Qué sueño queremos cumplir
+                                    hoy?</p>
                             </div>
-                            <div class="options-wrapper" style="display:flex;flex-direction:column;gap:8px;margin-top:15px;">
-                                <button class="option-btn" type="button" data-i18n="chat_opt_1">Quiero comprar una casa</button>
-                                <button class="option-btn" type="button" data-i18n="chat_opt_2">Quiero unir mis puntos</button>
-                                <button class="option-btn" type="button" data-i18n="chat_opt_3">Saber de mis puntos</button>
+                            <div class="options-wrapper"
+                                style="display:flex;flex-direction:column;gap:8px;margin-top:15px;">
+                                <button class="option-btn" type="button" data-i18n="chat_opt_1">Quiero comprar una
+                                    casa</button>
+                                <button class="option-btn" type="button" data-i18n="chat_opt_2">Quiero unir mis
+                                    puntos</button>
+                                <button class="option-btn" type="button" data-i18n="chat_opt_3">Saber de mis
+                                    puntos</button>
                             </div>
                         </div>
                         <div class="chat-input-area">
                             <form id="chatForm" onsubmit="return false;">
-                                <input type="text" id="userInput" placeholder="Escribe tu mensaje..." autocomplete="off" onkeypress="if(event.key==='Enter')sendChatMessage()">
-                                <button type="submit" id="sendBtn" onclick="sendChatMessage()"><i class='bx bx-send'></i></button>
+                                <input type="text" id="userInput" placeholder="Escribe tu mensaje..." autocomplete="off"
+                                    onkeypress="if(event.key==='Enter')sendChatMessage()">
+                                <button type="submit" id="sendBtn" onclick="sendChatMessage()"><i
+                                        class='bx bx-send'></i></button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </script>
-    
-    <script>
-    // GLOBAL handleOptionClick function
-    window.handleOptionClick = function(text) {
-        var messages = document.getElementById('chatMessages');
-        if (!messages) return;
-        
-        // Add user message
-        var userMsg = document.createElement('div');
-        userMsg.className = 'message user';
-        userMsg.textContent = text;
-        messages.appendChild(userMsg);
-        
-        // Remove options after selection
-        var optionsWrapper = messages.querySelector('.options-wrapper');
-        if (optionsWrapper) optionsWrapper.remove();
-        
-        messages.scrollTop = messages.scrollHeight;
-        
-        // Show typing indicator
-        var typing = document.createElement('div');
-        typing.className = 'typing-indicator';
-        typing.innerHTML = '<span>•</span><span>•</span><span>•</span>';
-        messages.appendChild(typing);
-        messages.scrollTop = messages.scrollHeight;
-        
-        // Simulate bot response after 1.5 second
-        setTimeout(function() {
-            var typingInd = messages.querySelector('.typing-indicator');
-            if (typingInd) typingInd.remove();
-            
-            var botMsg = document.createElement('div');
-            botMsg.className = 'message bot';
-            botMsg.innerHTML = window.getBotResponse(text);
-            messages.appendChild(botMsg);
-            messages.scrollTop = messages.scrollHeight;
-        }, 1500);
-    };
-    </script>
-    
-    <!-- 5. Properties (Desire) -->
+        </script>
+
+        <script>
+            // GLOBAL handleOptionClick function
+            window.handleOptionClick = function (text) {
+                var messages = document.getElementById('chatMessages');
+                if (!messages) return;
+
+                // Add user message
+                var userMsg = document.createElement('div');
+                userMsg.className = 'message user';
+                userMsg.textContent = text;
+                messages.appendChild(userMsg);
+
+                // Remove options after selection
+                var optionsWrapper = messages.querySelector('.options-wrapper');
+                if (optionsWrapper) optionsWrapper.remove();
+
+                messages.scrollTop = messages.scrollHeight;
+
+                // Show typing indicator
+                var typing = document.createElement('div');
+                typing.className = 'typing-indicator';
+                typing.innerHTML = '<span>•</span><span>•</span><span>•</span>';
+                messages.appendChild(typing);
+                messages.scrollTop = messages.scrollHeight;
+
+                // Simulate bot response after 1.5 second
+                setTimeout(function () {
+                    var typingInd = messages.querySelector('.typing-indicator');
+                    if (typingInd) typingInd.remove();
+
+                    var botMsg = document.createElement('div');
+                    botMsg.className = 'message bot';
+                    botMsg.innerHTML = window.getBotResponse(text);
+                    messages.appendChild(botMsg);
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1500);
+            };
+        </script>
+
+        <!-- 5. Properties (Desire) -->
         <section id="propiedades" class="properties-section" data-aos="fade-up" data-aos-duration="800">
             <div class="section-container">
                 <h2 class="section-title">🏆 Desarrollos Destacados</h2>
@@ -637,8 +652,8 @@
                 <div class="ai-matchmaker">
                     <div class="ai-matchmaker-inner glass-panel">
                         <i class='bx bx-sparkles ai-icon'></i>
-                        <input type="text" id="aiSearchInput" data-i18n-placeholder="search_placeholder" placeholder="Tu hogar ideal o presupuesto..."
-                            autocomplete="off">
+                        <input type="text" id="aiSearchInput" data-i18n-placeholder="search_placeholder"
+                            placeholder="Tu hogar ideal o presupuesto..." autocomplete="off">
                         <button id="aiVoiceBtn" class="ai-voice-btn" onclick="startVoiceRecognition()"
                             title="Buscar con voz">
                             <i class='bx bx-microphone'></i>
@@ -700,11 +715,20 @@
                     </div>
                     <!-- Botón flotante para agregar nuevo desarrollo (solo admin) -->
                     <style>
-                    #adminActionBtns { display:flex !important; gap:10px !important; margin-top:15px !important; }
-                    #adminActionBtns button { margin-right:10px !important; }
+                        #adminActionBtns {
+                            display: flex !important;
+                            gap: 10px !important;
+                            margin-top: 15px !important;
+                        }
+
+                        #adminActionBtns button {
+                            margin-right: 10px !important;
+                        }
                     </style>
-                    <div id="masterAdminAddBtn" style="display:none; position:fixed; bottom:30px; right:30px; z-index:9999;">
-                        <button style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:white;font-size:32px;cursor:pointer;box-shadow:0 4px 20px rgba(99,102,241,0.5);">+</button>
+                    <div id="masterAdminAddBtn"
+                        style="display:none; position:fixed; bottom:30px; right:30px; z-index:9999;">
+                        <button
+                            style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;color:white;font-size:32px;cursor:pointer;box-shadow:0 4px 20px rgba(99,102,241,0.5);">+</button>
                     </div>
                 </div>
             </div>
@@ -714,7 +738,8 @@
         <section class="simulator-section" data-aos="fade-up" data-aos-duration="800" id="simulador">
             <div class="section-container">
                 <h2 class="section-title" data-i18n="sim_title">📊 Simulador de Crédito Interactivo</h2>
-                <p class="section-subtitle" data-i18n="sim_subtitle">Calcula tu poder de compra en segundos. ¡Mueve los controles!</p>
+                <p class="section-subtitle" data-i18n="sim_subtitle">Calcula tu poder de compra en segundos. ¡Mueve los
+                    controles!</p>
 
                 <div class="simulador-grid">
                     <!-- Controles (Sliders) -->
@@ -820,7 +845,8 @@
                     <div class="plusvalia-result" id="pvResult">
                         <div id="pvChart" class="pv-bars"></div>
                         <div class="pv-summary" id="pvSummary">
-                            <p style="color:var(--text-muted);" data-i18n="pv_summary_init">Introduce el precio de tu propiedad para ver la proyección</p>
+                            <p style="color:var(--text-muted);" data-i18n="pv_summary_init">Introduce el precio de tu
+                                propiedad para ver la proyección</p>
                         </div>
                     </div>
                 </div>
@@ -830,30 +856,35 @@
         <!-- 4. Value Proposition (Features Band - Logic) -->
         <section class="value-prop-section" data-aos="fade-up" data-aos-duration="800">
             <div class="section-container">
-                <h2 class="section-title" data-i18n="feat_title">¿Por qué dejas tus trámites a <span>Tu Amigo Experto</span>?</h2>
+                <h2 class="section-title" data-i18n="feat_title">¿Por qué dejas tus trámites a <span>Tu Amigo
+                        Experto</span>?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="icon-wrapper"><i class='bx bx-book-open'></i></div>
                         <h3 data-i18n="feat_1_title">Educación desde Cero</h3>
-                        <p data-i18n="feat_1_desc">Te explicamos qué es la Subcuenta, Precalificación y Escrituración de forma clara y sin
+                        <p data-i18n="feat_1_desc">Te explicamos qué es la Subcuenta, Precalificación y Escrituración de
+                            forma clara y sin
                             tecnicismos.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon-wrapper"><i class='bx bxs-group'></i></div>
                         <h3 data-i18n="feat_2_title">Unamos Créditos</h3>
-                        <p data-i18n="feat_2_desc">Junta tus puntos Infonavit con tu pareja, amigos o familiares para alcanzar tu meta más
+                        <p data-i18n="feat_2_desc">Junta tus puntos Infonavit con tu pareja, amigos o familiares para
+                            alcanzar tu meta más
                             rápido.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon-wrapper"><i class='bx bxs-shield-alt-2'></i></div>
                         <h3 data-i18n="feat_3_title">Compra Segura</h3>
-                        <p data-i18n="feat_3_desc">Te guiamos paso a paso en la compra de tu propiedad con Alberca, Escuelas, Canchas
+                        <p data-i18n="feat_3_desc">Te guiamos paso a paso en la compra de tu propiedad con Alberca,
+                            Escuelas, Canchas
                             deportivas, etc.</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon-wrapper"><i class='bx bx-tachometer'></i></div>
                         <h3 data-i18n="feat_4_title">Velocidad Nacional</h3>
-                        <p data-i18n="feat_4_desc">Nosotros nos encargamos de todos los trámites para que tú solo disfrutes el resultado de las
+                        <p data-i18n="feat_4_desc">Nosotros nos encargamos de todos los trámites para que tú solo
+                            disfrutes el resultado de las
                             llaves.</p>
                     </div>
                 </div>
@@ -869,13 +900,15 @@
                         <div class="myth-front">
                             <i class='bx bx-ghost'></i>
                             <h3 data-i18n="myth_tag">Mito</h3>
-                            <p data-i18n="myth_1_f">"Si uno mis puntos con otra persona, la casa será solo de uno de los dos."</p>
+                            <p data-i18n="myth_1_f">"Si uno mis puntos con otra persona, la casa será solo de uno de los
+                                dos."</p>
                             <span class="flip-hint" data-i18n="myth_hint">Toca para ver la verdad</span>
                         </div>
                         <div class="myth-back">
                             <i class='bx bx-check-shield'></i>
                             <h3 data-i18n="truth_tag">Verdad</h3>
-                            <p data-i18n="myth_1_t">¡Falso! Con <strong>Unamos Créditos</strong> ambos son dueños legales bajo la figura de Copropiedad. Tu inversión está 100% protegida.</p>
+                            <p data-i18n="myth_1_t">¡Falso! Con <strong>Unamos Créditos</strong> ambos son dueños
+                                legales bajo la figura de Copropiedad. Tu inversión está 100% protegida.</p>
                         </div>
                     </div>
                 </div>
@@ -891,7 +924,8 @@
                         <div class="myth-back">
                             <i class='bx bx-rocket'></i>
                             <h3 data-i18n="truth_tag">Verdad</h3>
-                            <p data-i18n="myth_2_t">¡Para nada! Nosotros agilizamos avalúos y gestión. Normalmente en <strong>3 a 5 semanas</strong> ya te estamos entregando tus llaves.</p>
+                            <p data-i18n="myth_2_t">¡Para nada! Nosotros agilizamos avalúos y gestión. Normalmente en
+                                <strong>3 a 5 semanas</strong> ya te estamos entregando tus llaves.</p>
                         </div>
                     </div>
                 </div>
@@ -901,13 +935,16 @@
                         <div class="myth-front">
                             <i class='bx bx-x-circle'></i>
                             <h3 data-i18n="myth_tag">Mito</h3>
-                            <p data-i18n="myth_3_f">"No puedo comprar una casa usada a un particular con mi crédito."</p>
+                            <p data-i18n="myth_3_f">"No puedo comprar una casa usada a un particular con mi crédito."
+                            </p>
                             <span class="flip-hint" data-i18n="myth_hint">Toca para ver la verdad</span>
                         </div>
                         <div class="myth-back">
                             <i class='bx bx-home-heart'></i>
                             <h3 data-i18n="truth_tag">Verdad</h3>
-                            <p data-i18n="myth_3_t">¡Claro que puedes! Nosotros somos expertos en <strong>Venta de Terceros</strong>. Nos aseguramos de destrabar los trámites para que la compra sea legal y segura.</p>
+                            <p data-i18n="myth_3_t">¡Claro que puedes! Nosotros somos expertos en <strong>Venta de
+                                    Terceros</strong>. Nos aseguramos de destrabar los trámites para que la compra sea
+                                legal y segura.</p>
                         </div>
                     </div>
                 </div>
@@ -916,7 +953,8 @@
 
         <!-- 6. Testimonial (Social Proof Marquee) -->
         <section class="testimonial-section" data-aos="zoom-in" data-aos-duration="800">
-            <h2 class="section-title" data-i18n="test_title" style="margin-bottom: 2rem;">Lo que dicen nuestros clientes 🤝</h2>
+            <h2 class="section-title" data-i18n="test_title" style="margin-bottom: 2rem;">Lo que dicen nuestros clientes
+                🤝</h2>
             <div class="marquee-container">
                 <div class="marquee-track">
                     <!-- Original -->
@@ -926,7 +964,8 @@
                                 alt="Sofía" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_1_txt">"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito."</p>
+                        <p data-i18n="test_1_txt">"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi
+                            crédito."</p>
                         <strong data-i18n="test_1_name">- Sofía M.</strong>
                     </div>
                     <!-- New ones -->
@@ -936,7 +975,8 @@
                                 alt="Carlos" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_2_txt">"El proceso fue súper rápido. En 3 semanas ya estábamos firmando escrituras."</p>
+                        <p data-i18n="test_2_txt">"El proceso fue súper rápido. En 3 semanas ya estábamos firmando
+                            escrituras."</p>
                         <strong data-i18n="test_2_name">- Carlos R.</strong>
                     </div>
                     <div class="test-card glass-panel">
@@ -945,7 +985,8 @@
                                 alt="Ana" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_3_txt">"Me consiguieron el departamento exacto que quería frente al mar. ¡10/10!"</p>
+                        <p data-i18n="test_3_txt">"Me consiguieron el departamento exacto que quería frente al mar.
+                            ¡10/10!"</p>
                         <strong data-i18n="test_3_name">- Ana L.</strong>
                     </div>
                     <div class="test-card glass-panel">
@@ -954,7 +995,8 @@
                                 alt="Miguel" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_4_txt">"Vendieron mi casa en tiempo récord y sin vueltas legales. Excelente servicio."</p>
+                        <p data-i18n="test_4_txt">"Vendieron mi casa en tiempo récord y sin vueltas legales. Excelente
+                            servicio."</p>
                         <strong data-i18n="test_4_name">- Miguel A.</strong>
                     </div>
                     <!-- Cloned for seamless loop -->
@@ -964,7 +1006,8 @@
                                 alt="Sofía" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_1_txt">"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi crédito."</p>
+                        <p data-i18n="test_1_txt">"Pensé que no me alcanzaban los puntos, pero Juan me ayudó a unir mi
+                            crédito."</p>
                         <strong data-i18n="test_1_name">- Sofía M.</strong>
                     </div>
                     <div class="test-card glass-panel">
@@ -973,7 +1016,8 @@
                                 alt="Carlos" class="test-img-small">
                             <div class="stars">⭐⭐⭐⭐⭐</div>
                         </div>
-                        <p data-i18n="test_2_txt">"El proceso fue súper rápido. En 3 semanas ya estábamos firmando escrituras."</p>
+                        <p data-i18n="test_2_txt">"El proceso fue súper rápido. En 3 semanas ya estábamos firmando
+                            escrituras."</p>
                         <strong data-i18n="test_2_name">- Carlos R.</strong>
                     </div>
                 </div>
@@ -990,7 +1034,8 @@
                         <i class='bx bx-chevron-down'></i>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq_a1"><strong>¡Absolutamente ninguno!</strong> Mi primer objetivo es analizar tu caso, ver tus
+                        <p data-i18n="faq_a1"><strong>¡Absolutamente ninguno!</strong> Mi primer objetivo es analizar tu
+                            caso, ver tus
                             puntos y trazarte un plan. Solo ganamos si tú logras comprar o vender tu casa de forma
                             exitosa.</p>
                     </div>
@@ -1001,7 +1046,8 @@
                         <i class='bx bx-chevron-down'></i>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq_a2">¡Por supuesto! De hecho, nuestro fuerte es ayudar a personas de todo México a invertir en el
+                        <p data-i18n="faq_a2">¡Por supuesto! De hecho, nuestro fuerte es ayudar a personas de todo
+                            México a invertir en el
                             paraíso. Nosotros coordinamos los trámites a distancia para que tú solo vengas a disfrutar
                             tu nueva casa.</p>
                     </div>
@@ -1012,7 +1058,8 @@
                         <i class='bx bx-chevron-down'></i>
                     </button>
                     <div class="faq-answer">
-                        <p data-i18n="faq_a3">¡Sí! Ya no es necesario estar casados. Puedes unir tu crédito con un familiar (padres,
+                        <p data-i18n="faq_a3">¡Sí! Ya no es necesario estar casados. Puedes unir tu crédito con un
+                            familiar (padres,
                             hermanos) o un amigo(a) y comprar juntos una mejor propiedad dividiendo los gastos.</p>
                     </div>
                 </div>
@@ -1060,10 +1107,11 @@
         <div class="section-container">
             <h2 class="section-title">📍 Nuestros Desarrollos en el Mapa</h2>
             <p class="section-subtitle">Propiedades estratégicamente ubicadas en el paraíso mexicano</p>
-            
+
             <div class="map-layout">
                 <div class="map-display">
-                    <iframe id="masterMapIframe" src="" style="width:100%; height:100%; border:0;" allowfullscreen loading="lazy"></iframe>
+                    <iframe id="masterMapIframe" src="" style="width:100%; height:100%; border:0;" allowfullscreen
+                        loading="lazy"></iframe>
                 </div>
                 <div class="map-sidebar">
                     <div class="map-property-list" id="masterMapPropertyList">
@@ -1082,7 +1130,8 @@
                     <i class='bx bxs-home-heart'></i>
                     <span data-i18n="footer_brand">Tu Amigo Experto</span>
                 </div>
-                <p data-i18n="footer_desc">Tu aliado para comprar o vender propiedades en Cancún, Riviera Maya y México de forma segura,
+                <p data-i18n="footer_desc">Tu aliado para comprar o vender propiedades en Cancún, Riviera Maya y México
+                    de forma segura,
                     garantizando tu inversión.</p>
             </div>
             <div class="footer-links">
@@ -1091,7 +1140,8 @@
                     <li><a href="#" onclick="openLeadModal()" data-i18n="link_advice">Agendar Asesoría</a></li>
                     <li><a href="#propiedades" data-i18n="link_props">Desarrollos Destacados</a></li>
                     <li><a href="#simulador"
-                            onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})" data-i18n="link_sim">Simulador
+                            onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})"
+                            data-i18n="link_sim">Simulador
                             de Crédito</a></li>
                 </ul>
             </div>
@@ -1174,10 +1224,12 @@
                 <div class="prop-gallery">
                     <div class="prop-viewer-stage">
                         <div class="gallery-toggles">
-                            <button class="gallery-toggle-btn active" id="btnShowPhotos" onclick="window.switchPropView('photos')">
+                            <button class="gallery-toggle-btn active" id="btnShowPhotos"
+                                onclick="window.switchPropView('photos')">
                                 <i class='bx bx-images'></i> <span data-i18n="toggle_photos">Fotos</span>
                             </button>
-                            <button class="gallery-toggle-btn" id="btnShow360" onclick="window.switchPropView('360')" style="display:none;">
+                            <button class="gallery-toggle-btn" id="btnShow360" onclick="window.switchPropView('360')"
+                                style="display:none;">
                                 <i class='bx bx-cube-alt'></i> <span>Vista 360</span>
                             </button>
                             <button class="gallery-toggle-btn" id="btnShowMap" onclick="window.switchPropView('map')">
@@ -1231,7 +1283,8 @@
                         <button class="pm-cta" onclick="openLeadModal(); closePropertyModal();" style="flex:2;">
                             <i class='bx bxl-whatsapp'></i> Agendar Visita
                         </button>
-                        <button class="pm-cta" id="pmShareBtn" onclick="window.sharePropertyWhatsApp()" style="flex:1; background:var(--secondary); color:white;">
+                        <button class="pm-cta" id="pmShareBtn" onclick="window.sharePropertyWhatsApp()"
+                            style="flex:1; background:var(--secondary); color:white;">
                             <i class='bx bx-share-alt'></i> Compartir
                         </button>
                     </div>
@@ -1328,9 +1381,12 @@
             <p style="color:var(--text-muted); font-size: 0.85rem; margin-top: 10px;">Ingresa la clave de administrador
                 para habilitar edición.</p>
             <input type="password" id="adminKey" maxlength="4" placeholder="••••">
-            <button onclick="var k=document.getElementById('adminKey').value; if(k==7003){document.body.classList.add('editor-mode');sessionStorage.setItem('adminSession','true'); if(window.setupAdminAccess) window.setupAdminAccess(); document.getElementById('adminModal').classList.remove('active'); alert('EDITOR ACTIVADO');}else{alert('CLAVE INCORRECTA');}">Desbloquear</button>
-            <button onclick="sessionStorage.removeItem('adminSession'); location.reload();" style="background:#444; margin-top:5px;">Cerrar Sesión Actual</button>
-            <button onclick="closeAdminModal()" style="background:transparent; color: #888; font-size: 0.8rem; margin-top: 10px;">Cancelar</button>
+            <button
+                onclick="var k=document.getElementById('adminKey').value; if(k==7003){document.body.classList.add('editor-mode');sessionStorage.setItem('adminSession','true'); if(window.setupAdminAccess) window.setupAdminAccess(); document.getElementById('adminModal').classList.remove('active'); alert('EDITOR ACTIVADO');}else{alert('CLAVE INCORRECTA');}">Desbloquear</button>
+            <button onclick="sessionStorage.removeItem('adminSession'); location.reload();"
+                style="background:#444; margin-top:5px;">Cerrar Sesión Actual</button>
+            <button onclick="closeAdminModal()"
+                style="background:transparent; color: #888; font-size: 0.8rem; margin-top: 10px;">Cancelar</button>
         </div>
     </div>
 
@@ -1376,12 +1432,28 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/app-master.js?v=13"></script>
-    
-    <style>
-        .admin-field { margin-bottom: 15px; }
-        .admin-field label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 5px; }
-        .admin-input { width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid #444; border-radius: 8px; color: white; }
 
+    <style>
+        .admin-field {
+            margin-bottom: 15px;
+        }
+
+        .admin-field label {
+            display: block;
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+        }
     </style>
 </body>
+
 </html>
